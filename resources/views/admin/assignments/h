@@ -1,0 +1,145 @@
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Dashboard Admin') }}
+        </h2>
+    </x-slot>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <a href="{{ route('assignments.index') }}" class="btn btn-secondary mb-4">Back</a>
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    <div class="py-12">
+                        <h1>Tạo Assignments</h1>
+
+                        <form action="{{ route('assignments.store') }}" method="POST">
+                            @csrf
+                            <div id="assignments-container">
+                                <div class="assignment-group">
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <label for="course_id" class="form-label">Chọn Khóa Học</label>
+                                            <select id="course_id" name="course_id[]" class="form-control select2"
+                                                required>
+                                                @foreach ($allcourses as $course)
+                                                <option value="{{ $course->id }}">{{ $course->code }} - {{ $course->name
+                                                    }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="component_name" class="form-label">Tên thành phần đánh
+                                                giá</label>
+                                            <input type="text" class="form-control" name="component_name[]"
+                                                value="{{ old('component_name') }}" required>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="weight" class="form-label">Trọng số</label>
+                                            <input type="text" class="form-control" name="weight[]"
+                                                value="{{ old('weight') }}" required>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="clo_ids" class="form-label">CLO</label>
+                                            <select name="clo_ids[]" class="form-control select2" multiple>
+                                                @foreach ($courselos as $clo)
+                                                <option value="{{ $clo->id }}">{{ $clo->name }} - {{$clo->detail}}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <label for="assessment_type" class="form-label">Hình Thức</label>
+                                            <input type="text" class="form-control" name="assessment_type[]"
+                                                value="{{ old('assessment_type') }}" required>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="assessment_tool" class="form-label">Công cụ</label>
+                                            <input type="text" class="form-control" name="assessment_tool[]"
+                                                value="{{ old('assessment_tool') }}" required>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="clo_weight" class="form-label">Trọng số CLO</label>
+                                            <input type="text" class="form-control" name="clo_weight[]"
+                                                value="{{ old('clo_weight') }}">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="plos" class="form-label">PLO liên quan</label>
+                                            <input type="text" class="form-control" name="plos[]"
+                                                value="{{ old('plos') }}">
+                                        </div>
+                                    </div>
+
+                                    <button type="button" class="btn btn-danger remove-assignment">Remove</button>
+                                    <hr>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn btn-secondary" id="add-assignment">Add More</button>
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</x-app-layout>
+
+<script>
+    $(document).ready(function () {
+        $('.select2').select2({
+            placeholder: "Chọn Khóa học",
+            allowClear: true
+        });
+        $('#course_id').change(function () {
+            var courseId = $(this).val();
+            if (courseId) {
+                $.ajax({
+                    url: `/admin/courses/${courseId}/clos`,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        var cloSelect = $('#clo_ids');
+                        cloSelect.empty();
+                        $.each(data, function (index, clo) {
+                            cloSelect.append('<option value="' + clo.id + '" data-detail="' + clo.detail + '">' + clo.name + ' - ' + clo.detail + '</option>');
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('AJAX Error:', error);
+                    }
+                });
+            } else {
+                $('#clo_ids').empty();
+            }
+        });
+
+
+        $('#add-assignment').on('click', function () {
+            const assignmentGroup = $('.assignment-group').first().clone();
+            assignmentGroup.find('input').val('');
+            assignmentGroup.find('select').val('').trigger('change');
+            $('#assignments-container').append(assignmentGroup);
+        });
+
+        $(document).on('click', '.remove-assignment', function () {
+            if ($('.assignment-group').length > 1) {
+                $(this).closest('.assignment-group').remove();
+            }
+        });
+
+        // Lấy giá trị khóa học đầu tiên khi Add More
+        $('#assignments-container').on('click', '#add-assignment', function () {
+            const firstCourseId = $('#course_id:first').val();
+            $('.assignment-group:last').find('#course_id').val(firstCourseId).trigger('change');
+        });
+
+
+    });
+</script>
