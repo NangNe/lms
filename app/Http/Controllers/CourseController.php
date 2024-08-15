@@ -9,6 +9,7 @@ use App\Models\CoursesLo;
 use App\Models\Material;
 use App\Models\Assignments;
 use App\Models\Lessons;
+use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -41,6 +42,7 @@ class CourseController extends Controller
         if (Auth::user()->usertype !== 'admin') {
             return redirect()->route('courses')->with('error', 'Bạn không có quyền lưu khóa học.');
         }
+    
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'code' => 'nullable|string|max:255',
@@ -66,65 +68,32 @@ class CourseController extends Controller
             'is_active' => 'boolean',
             'english_name' => 'nullable|string',
             'time_allocation' => 'nullable|string',
-            // 'main_instructor' => 'nullable|string',
-            // 'co_instructors' => 'nullable|string',
             'department' => 'nullable|string',
-            'syllabus' => 'nullable|mimes:pdf,doc,docx|max:2048', // Validate file syllabus
-
-
-
+            'syllabus' => 'nullable|file|mimes:pdf,doc,docx|max:40960', // Validate file syllabus
         ]);
-
-        // $course = Course::create([
-        //     'name' => $request->name,
-        //     'code' => $request->code,
-        //     'semester' => $request->semester,
-        //     'credits' => $request->credits,
-        //     'prerequisites' => $request->prerequisites,
-        //     'prior_course' => $request->prior_course,
-        //     'co_requisite' => $request->co_requisite,
-        //     'is_mandatory' => $request->has('is_mandatory'),
-        //     'knowledge_area' => $request->knowledge_area,
-        //     'objectives' => $request->objectives,
-        //     'summary' => $request->summary,
-        //     'description' => $request->description,
-        //     'student_tasks' => $request->student_tasks,
-        //     'decision_no' => $request->decision_no,
-        //     'is_approved' => $request->has('is_approved'),
-        //     'note' => $request->note,
-        //     'approved_date' => $request->approved_date,
-        //     'is_active' => $request->has('is_active'),
-        //     'english_name' => $request->english_name,
-        //     'time_allocation' => $request->time_allocation,
-        //     // 'main_instructor' => $request->main_instructor,
-        //     // 'co_instructors' => $request->co_instructors,
-        //     'department' => $request->department,
-            
-
-        // ]);
-        $course = Course::create($validatedData);
-
-        
+    
+        $course = new Course();
+        $course->fill($validatedData); // Sử dụng fill để điền dữ liệu từ mảng đã xác thực
+    
         if ($request->hasFile('syllabus')) {
             $file = $request->file('syllabus');
             $filename = time() . '-' . $file->getClientOriginalName();
             $file->storeAs('public/uploads', $filename);
             $course->syllabus = $filename;
-            $course -> save();
         }
-
+        
+        $course->save(); // Lưu khóa học sau khi đã gán các giá trị khác
+    
+        // Liên kết khóa học với các giảng viên
         if ($request->lecturers) {
             $course->lecturers()->sync($request->lecturers);
-        
+        }
+    
         // Liên kết khóa học với các chuyên ngành
         $course->majors()->attach($request->major_ids);
+    
         return redirect()->route('courses')->with('success', 'Khóa học đã được tạo thành công.');
     }
-}
-
-
-    
-    
 
 
     public function edit($id)
@@ -142,7 +111,7 @@ class CourseController extends Controller
         $currentCoRequisite = $course->co_requisite;
         $lecturers = User::where('usertype', 'lecturer')->get();
         $selectedLecturers = $course->lecturers()->pluck('users.id')->toArray();
-    
+        
         return view('admin/courses.edit', compact('course', 'majors', 'all_courses', 'selectedMajorIds', 'currentPrerequisite', 'currentPriorCourse', 'currentCoRequisite', 'lecturers', 'selectedLecturers'));
     }
 
@@ -182,38 +151,26 @@ class CourseController extends Controller
             // 'main_instructor' => 'nullable|string',
             // 'co_instructors' => 'nullable|string',
             'department' => 'nullable|string',
-            'syllabus' => 'nullable|mimes:pdf,doc,docx|max:2048', // Validate file syllabus
-
+            'syllabus' => 'nullable|mimes:pdf,doc,docx|max:40960', // Validate file syllabus
 
 
         ]);
 
         $course = Course::findOrFail($id);
-        $course->update([
-            'code' => $request->code,
-            'name' => $request->name,
-            'semester' => $request->semester,
-            'credits' => $request->credits,
-            'prerequisites' => $request->prerequisites,
-            'prior_course' => $request->prior_course,
-            'co_requisite' => $request->co_requisite,
-            'is_mandatory' => $request->has('is_mandatory'),
-            'knowledge_area' => $request->knowledge_area,
-            'objectives' => $request->objectives,
-            'summary' => $request->summary,
-            'description' => $request->description,
-            'student_tasks' => $request->student_tasks,
-            'decision_no' => $request->decision_no,
-            'is_approved' => $request->has('is_approved'),
-            'note' => $request->note,
-            'approved_date' => $request->approved_date,
-            'is_active' => $request->has('is_active'),
-            'english_name' => $request->english_name,
-            'time_allocation' => $request->time_allocation,
-            // 'main_instructor' => $request->main_instructor,
-            // 'co_instructors' => $request->co_instructors,
-            'department' => $request->department,
-        ]);
+        $course->fill($request->all());
+        if ($request->hasFile('syllabus')) {
+
+            if ($course->syllabus) {
+                Storage::delete('public/uploads/' . $course->syllabus);
+            }
+            $file = $request->file('syllabus');
+            $filename = time() . '-' . $file->getClientOriginalName();
+            $file->storeAs('public/uploads', $filename);
+            $course->syllabus = $filename;
+        }
+
+        $course->save();
+
         $course->majors()->sync($request->major_ids);
         if ($request->lecturers) {
             $course->lecturers()->sync($request->lecturers);
@@ -230,6 +187,9 @@ class CourseController extends Controller
             return redirect()->route('courses')->with('error', 'Bạn không có quyền xóa khóa học.');
         }
         $course = Course::find($id);
+        if ($course -> syllabus) {
+            Storage::delete('public/uploads/' . $course->syllabus);
+        }
 
         if ($course) {
             $course->delete();

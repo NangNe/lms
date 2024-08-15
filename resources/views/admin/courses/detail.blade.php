@@ -40,9 +40,8 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-1200">
                     <div class="container">
-                        @if ($course->syllabus)
-                            <a href="{{ asset('syllabi/' . $course->syllabus) }}" target="_blank">Xem Đề Cương</a>
-                            <a href="{{ asset('syllabi/' . $course->syllabus) }}" download>Download Đề Cương</a>
+                        @if ($courses->syllabus)
+                       <a href="{{ Storage::url('uploads/' . $courses->syllabus) }}" target="_blank">Tải xuống đề cương</a>
                         @endif
 
                         <table class="table">
@@ -207,7 +206,6 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Khóa học</th>
                                 <th>Nội dung</th>
                                 <th>Số buổi</th>
                                 <th>Mục tiêu</th>
@@ -220,7 +218,6 @@
                         <tbody>
                             @foreach ($lessons as $lesson)
                                 <tr>
-                                    <td>{{ $lesson->course->name }}</td>
                                     <td>{{ $lesson->topic }}</td>
                                     <td>{{ $lesson->number_of_periods }}</td>
                                     <td>{{ $lesson->objectives }}</td>

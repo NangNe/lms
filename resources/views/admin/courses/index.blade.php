@@ -15,6 +15,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <h1>Danh sách Khóa Học</h1>
+
                     <a href="{{ route('courses.create') }}" class="btn btn-primary">Tạo Khóa Học Mới</a>
                     <table class="table" id="coursesTable">
                         <thead>
@@ -31,6 +32,7 @@
                         </thead>
                         <tbody>
                             @foreach ($courses as $course)
+                                
                                 <tr>
                                     <td>{{ $course->code }}</td>
                                     <td>{{ $course->name }}</td>
@@ -41,15 +43,15 @@
                                         @php
                                             // Khởi tạo biến để lưu tên khóa học
                                             $prerequisiteName = '';
-                        
+
                                             // Nếu thuộc tính prerequisites không rỗng
                                             if (!empty($course->prerequisites)) {
                                                 // Lấy ID khóa học từ thuộc tính prerequisites
                                                 $prerequisiteId = $course->prerequisites;
-                        
+
                                                 // Lấy tên khóa học dựa trên ID
                                                 $prerequisiteCourse = \App\Models\Course::find($prerequisiteId);
-                                                
+
                                                 // Kiểm tra nếu khóa học tồn tại
                                                 if ($prerequisiteCourse) {
                                                     $prerequisiteName = $prerequisiteCourse->name;
@@ -60,31 +62,32 @@
                                         {{ $prerequisiteName }}
                                     </td>
                                     <td>
-                                       @php
-                                           $priorCourseName = '';
+                                        @php
+                                            $priorCourseName = '';
 
-                                             if (!empty($course->prior_course)) {
-                                                  $priorCourseId = $course->prior_course;
-    
-                                                  $priorCourse = \App\Models\Course::find($priorCourseId);
-    
-                                                  if ($priorCourse) {
+                                            if (!empty($course->prior_course)) {
+                                                $priorCourseId = $course->prior_course;
+
+                                                $priorCourse = \App\Models\Course::find($priorCourseId);
+
+                                                if ($priorCourse) {
                                                     $priorCourseName = $priorCourse->name;
-                                                  }
-                                             }
-                                       @endphp
+                                                }
+                                            }
+                                        @endphp
                                         {{ $priorCourseName }}
                                     </td>
 
                                     <td>
-                                    
+
                                         <a href="{{ route('courses.edit', $course) }}" class="btn btn-warning">Sửa</a>
                                         <form action="{{ route('courses.destroy', $course) }}" method="POST"
                                             style="display:inline;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</button>
-                       
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</button>
+
                                         </form>
                                     </td>
                                 </tr>

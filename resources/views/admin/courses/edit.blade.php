@@ -12,7 +12,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <h1>Sửa Khóa Học</h1>
-                    <form action="{{ route('courses.update', $course) }}" method="POST">
+                    <form action="{{ route('courses.update', $course) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
@@ -46,12 +46,31 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="mb-3">
+                            <label for="syllabus" class="form-label">Đề cương</label>
+
+                            @if ($course->syllabus)
+                                <input type="file" class="form-control" id="syllabus" name="syllabus">
+                                <p>Hiện tại: <a href="{{ Storage::url('uploads/' . $course->syllabus) }}"
+                                        target="_blank">{{ $course->syllabus }}</a></p>
+                            @else
+                                <input type="file" class="form-control" id="syllabus" name="syllabus">
+                            @endif
+
+                            @error('syllabus')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+
+
+
 
                         <div class="form-group">
                             <label for="lecturers">Chọn Giảng Viên Phụ Trách:</label>
                             <select name="lecturers[]" id="lecturers" class="form-control select4" multiple="multiple">
                                 @foreach ($lecturers as $lecturer)
-                                    <option style="width: 120px" value="{{ $lecturer->id }}" 
+                                    <option style="width: 120px" value="{{ $lecturer->id }}"
                                         {{ in_array($lecturer->id, $selectedLecturers) ? 'selected' : '' }}>
                                         {{ $lecturer->name }}
                                     </option>
@@ -313,6 +332,20 @@
         $('.select4').select2({
             placeholder: "Chọn giảng viên",
             allowClear: true
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var syllabusInput = document.getElementById('syllabus');
+
+        syllabusInput.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                // Hiển thị tên tệp đã chọn
+                var fileName = this.files[0].name;
+                this.nextElementSibling.innerText = 'Tệp đã chọn: ' + fileName;
+            }
         });
     });
 </script>

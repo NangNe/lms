@@ -40,7 +40,9 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-1200">
                     <div class="container">
-
+                        @if ($courses->syllabus)
+                        <a href="{{ Storage::url('uploads/' . $courses->syllabus) }}" target="_blank">Tải xuống đề cương</a>
+                         @endif
                         <table class="table">
                             <tbody>
                                 <tr>

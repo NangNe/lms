@@ -12,7 +12,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <h1>Tạo Khóa Học Mới</h1>
-                    <form action="{{ route('courses.store') }}" method="POST">
+                    <form action="{{ route('courses.store') }}" method="POST"  enctype="multipart/form-data">
                         @csrf
 
                         <div class="form-group">
