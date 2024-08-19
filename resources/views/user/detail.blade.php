@@ -234,13 +234,11 @@
                                     <td>{{ $lesson->lecture_method }}</td>
                                     <td>{{ $lesson->active }}</td>
                                     <td>
-                                        @if ($lesson->s_download)
-                                            <a
-                                                href="{{ route('download', ['filename' => $lesson->s_download]) }}">{{ $lesson->s_download }}</a>
-                                        @else
-                                            Không có tệp
-                                        @endif
+                                        @if ($lesson ->s_download)  
+                                        <a href="{{ Storage::url('uploads/' . $lesson ->s_download) }}" target="_blank">{{$lesson->s_download}}</a>
+                                         @endif
                                     </td>
+
 
 
                                 </tr>

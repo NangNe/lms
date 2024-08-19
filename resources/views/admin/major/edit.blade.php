@@ -51,14 +51,6 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-3">
-                                <label for="total_credits" class="form-label">Total Credit</label>
-                                <input type="number" class="form-control" id="total_credits" name="total_credits"
-                                    value="{{ old('total_credits', $major->total_credits) }}">
-                                @error('total_credits')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
 
                             <button type="submit" class="btn btn-primary">Cập nhật</button>
                         </form>

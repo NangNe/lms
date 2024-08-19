@@ -49,14 +49,14 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-3">
+                            {{-- <div class="mb-3">
                                 <label for="total_credits" class="form-label">Total Credit</label>
                                 <input type="number" class="form-control" id="total_credits" name="total_credits"
                                     value="{{ old('total_credits') }}">
                                 @error('total_credits')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             <button type="submit" class="btn btn-primary">Lưu</button>
                         </form>

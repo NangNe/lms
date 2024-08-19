@@ -1,9 +1,11 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Major;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Course;
 
 class MajorController extends Controller
 {
@@ -41,13 +43,22 @@ class MajorController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'decision_number' => 'nullable|string',
-            'total_credits' => 'nullable|integer',
         ]);
 
-        Major::create($request->all());
+        // Tạo chuyên ngành mới
+        $major = Major::create($request->all());
+
+        // Tính tổng số tín chỉ từ bảng courses liên quan đến major_id vừa tạo
+        $totalCredits = $major->courses->sum('credits');
+
+        // Cập nhật giá trị total_credits
+        $major->total_credits = $totalCredits;
+        $major->save();
 
         return redirect()->route('majors')->with('success', 'Chuyên ngành đã được tạo thành công.');
     }
+
+
 
     // Chỉnh sửa chuyên ngành (chỉ dành cho admin)
     public function edit($id)
@@ -63,21 +74,33 @@ class MajorController extends Controller
     // Cập nhật chuyên ngành (chỉ dành cho admin)
     public function update(Request $request, $id)
     {
+        // Kiểm tra quyền truy cập
         if (Auth::user()->usertype !== 'admin') {
             return redirect()->route('majors')->with('error', 'Bạn không có quyền cập nhật chuyên ngành.');
         }
 
+        // Tìm chuyên ngành theo ID
         $major = Major::findOrFail($id);
 
-        $request->validate([
+        // Xác thực dữ liệu đầu vào
+        $validatedData = $request->validate([
             'code' => 'required|string|max:255|unique:majors,code,' . $major->id,
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'decision_number' => 'nullable|string',
-            'total_credits' => 'nullable|integer',
         ]);
 
-        $major->update($request->all());
+        // Cập nhật thông tin chuyên ngành
+        $major->update($validatedData);
+
+        // Tính toán tổng tín chỉ từ các khóa học thuộc chuyên ngành này
+        $totalCredits = Course::whereHas('majors', function ($query) use ($id) {
+            $query->where('majors.id', $id);
+        })->sum('credits');
+
+        // Cập nhật tổng tín chỉ
+        $major->total_credits = $totalCredits;
+        $major->save();
 
         return redirect()->route('majors')->with('success', 'Chuyên ngành đã được cập nhật thành công.');
     }
