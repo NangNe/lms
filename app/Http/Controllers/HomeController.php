@@ -38,14 +38,14 @@ class HomeController extends Controller
         return view('user/course', compact('majors'));
     }
 
-    public function download($filename)
-    {
-        $filePath = 'uploads/' . $filename;
+    // public function download($filename)
+    // {
+    //     $filePath = 'uploads/' . $filename;
 
-        if (Storage::disk('public')->exists($filePath)) {
-            return response()->download(storage_path('app/public/' . $filePath));
-        } else {
-            return redirect()->back()->with('error', 'File không tồn tại.');
-        }
-    }
+    //     if (Storage::disk('public')->exists($filePath)) {
+    //         return response()->download(storage_path('app/public/' . $filePath));
+    //     } else {
+    //         return redirect()->back()->with('error', 'File không tồn tại.');
+    //     }
+    // }
 }

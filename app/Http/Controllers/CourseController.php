@@ -92,12 +92,11 @@ class CourseController extends Controller
         $course->majors()->attach($validatedData['major_ids']);
 
         // Cập nhật tổng tín chỉ cho các chuyên ngành liên quan
-        foreach ($validatedData['major_ids'] as $majorId) {
-            $this->updateTotalCredits($majorId);
-        }
+        $this->updateTotalCredits($validatedData['major_ids']);
 
         return redirect()->route('courses')->with('success', 'Khóa học đã được tạo thành công.');
     }
+
 
 
     public function edit($id)
@@ -118,9 +117,6 @@ class CourseController extends Controller
         return view('admin/courses.edit', compact('course', 'majors', 'all_courses', 'selectedMajorIds', 'currentPrerequisite', 'currentPriorCourse', 'currentCoRequisite', 'lecturers', 'selectedLecturers'));
     }
 
-
-
-
     public function destroy($id)
     {
         if (Auth::user()->usertype !== 'admin') {
@@ -128,15 +124,24 @@ class CourseController extends Controller
         }
         $course = Course::find($id);
         if ($course) {
+            // Lấy danh sách các major liên quan đến course này
+            $relatedMajors = $course->majors;
+            // Xóa file syllabus nếu có
             if ($course->syllabus) {
                 Storage::delete('public/uploads/' . $course->syllabus);
             }
+            // Xóa khóa học
             $course->delete();
+            // Cập nhật tổng tín chỉ cho các chuyên ngành liên quan sau khi xóa khóa học
+            foreach ($relatedMajors as $major) {
+                $this->updateTotalCredits([$major->id]);
+            }
             return redirect()->route('courses')->with('success', 'Khóa học đã được xóa thành công.');
         } else {
             return redirect()->route('courses')->with('error', 'Khóa học không tồn tại.');
         }
     }
+
 
     public function show_by_id($id)
     {
@@ -215,7 +220,7 @@ class CourseController extends Controller
         if (!empty($request->major_ids)) {
             $this->updateTotalCredits($request->major_ids);
         }
-    
+
         $course->majors()->sync($request->major_ids);
         if ($request->lecturers) {
             $course->lecturers()->sync($request->lecturers);
