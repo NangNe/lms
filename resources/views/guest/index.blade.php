@@ -1,44 +1,93 @@
-<!DOCTYPE html>
-<html lang="en">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@extends('layouts.index')
 
-<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+@section('content')
+    <!-- Nội dung dành cho user hoặc guest -->
     <title>Danh sách Chuyên Ngành và Khóa Học</title>
-    {{-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> --}}
-    <style>
+    {{-- <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 20px;
+            background-color: #f4f6f9;
+            color: #333;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .major {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-bottom: 10px;
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #4a76a8;
         }
 
-        .major h2 {
-            margin: 0;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
         }
 
-        .courses {
-            margin-top: 10px;
+        th,
+        td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
         }
-    </style>
-</head>
 
-<body>
+        th {
+            background-color: #4a76a8;
+            color: #fff;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        a {
+            color: #4a76a8;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .fa-arrow-right {
+            margin-left: 5px;
+        }
+
+        .table {
+            margin-top: 20px;
+        }
+
+        /* DataTables styles */
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            color: #4a76a8 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background-color: #4a76a8 !important;
+            color: white !important;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            padding: 5px;
+            width: 250px;
+            margin-left: 10px;
+        }
+    </style> --}}
+
+
+
 
     <div class="container">
         <h1>Danh sách Chuyên Ngành và Khóa Học</h1>
@@ -58,7 +107,7 @@
                     <tr>
                         <td>{{ $major->code }}</td>
                         <td><a href="{{ route('guest.courses', $major->id) }}">
-                                {{ $major->name }}
+                                {{ $major->name }} <i class="fas fa-arrow-right"></i>
                             </a></td>
                         <td>{{ $major->created_at }}</td>
                         <td>{{ $major->description }}</td>
@@ -68,13 +117,5 @@
                 @endforeach
             </tbody>
         </table>
-
     </div>
-    <script>
-        $(document).ready(function() {
-            $('#coursesTable1').DataTable();
-        });
-    </script>
-</body>
-
-</html>
+@endsection

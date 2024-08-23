@@ -1,40 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.index')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-
-<body>
-    <style>
+@section('content')
+    {{-- <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 20px;
+            background-color: #f4f6f9;
+            color: #333;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .major {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-bottom: 10px;
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #4a76a8;
         }
 
-        .major h2 {
-            margin: 0;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
         }
 
-        .courses {
-            margin-top: 10px;
+        th,
+        td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
         }
-    </style>
+
+        th {
+            background-color: #4a76a8;
+            color: #fff;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        a {
+            color: #4a76a8;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .fa-arrow-right {
+            margin-left: 5px;
+        }
+
+        .table {
+            margin-top: 20px;
+        }
+
+        /* DataTables styles */
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            color: #4a76a8 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background-color: #4a76a8 !important;
+            color: white !important;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            padding: 5px;
+            width: 250px;
+            margin-left: 10px;
+        }
+    </style> --}}
+
     <div class="container">
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -91,7 +140,4 @@
             </div>
         </div>
     </div>
-
-</body>
-
-</html>
+@endsection

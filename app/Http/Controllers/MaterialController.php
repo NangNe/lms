@@ -46,49 +46,50 @@ class MaterialController extends Controller
     }
 
     public function store(Request $request)
-    {
-        if (Auth::user()->usertype !== 'lecturer') {
-            return redirect()->route('material')->with('error', 'Bạn không có quyền tạo material.');
-        }
-    
-        $request->validate([
-            'course_id.*' => 'required|exists:courses,id',
-            'description_material.*' => 'required|string|max:255',
-            'is_main_material.*' => 'nullable|boolean',
-            'isbn.*' => 'nullable|string',
-            'is_hard_copy.*' => 'nullable|boolean',
-            'is_online.*' => 'nullable|boolean',
-            'note.*' => 'nullable|string',
-            'author.*' => 'nullable|string',
-            'publisher.*' => 'nullable|string',
-            'publish_date.*' => 'nullable|date|before:today', // Quy tắc xác thực cho ngày trước ngày hiện tại
-            'edition.*' => 'nullable|string',
-        ]);
-    
-        $user = Auth::user();
-    
-        foreach ($request->course_id as $index => $courseId) {
-            if ($user->usertype === 'lecturer' && !$user->courses->pluck('id')->contains($courseId)) {
-                continue; // Skip if the lecturer doesn't have access to the course
-            }
-    
-            Material::create([
-                'course_id' => $courseId,
-                'description_material' => $request->description_material[$index],
-                'is_main_material' => $request->boolean('is_main_material')[$index] ?? false,
-                'isbn' => $request->isbn[$index],
-                'is_hard_copy' => $request->boolean('is_hard_copy')[$index] ?? false,
-                'is_online' => $request->boolean('is_online')[$index] ?? false,
-                'note' => $request->note[$index],
-                'author' => $request->author[$index],
-                'publisher' => $request->publisher[$index],
-                'publish_date' => $request->publish_date[$index],
-                'edition' => $request->edition[$index],
-            ]);
-        }
-    
-        return redirect()->route('material')->with('success', 'Các Material đã được tạo thành công.');
+{
+    if (Auth::user()->usertype !== 'lecturer') {
+        return redirect()->route('material')->with('error', 'Bạn không có quyền tạo material.');
     }
+    
+    $request->validate([
+        'course_id.*' => 'required|exists:courses,id',
+        'description_material.*' => 'required|string|max:255',
+        'is_main_material.*' => 'nullable|boolean',
+        'isbn.*' => 'nullable|string',
+        'is_hard_copy.*' => 'nullable|boolean',
+        'is_online.*' => 'nullable|boolean',
+        'note.*' => 'nullable|string',
+        'author.*' => 'nullable|string',
+        'publisher.*' => 'nullable|string',
+        'publish_date.*' => 'nullable|date|before:today',
+        'edition.*' => 'nullable|string',
+    ]);
+    
+    $user = Auth::user();
+    
+    foreach ($request->course_id as $index => $courseId) {
+        if ($user->usertype === 'lecturer' && !$user->courses->pluck('id')->contains($courseId)) {
+            continue; // Skip if the lecturer doesn't have access to the course
+        }
+    
+        Material::create([
+            'course_id' => $courseId,
+            'description_material' => $request->description_material[$index],
+            'is_main_material' => $request->input('is_main_material.' . $index, false),
+            'isbn' => $request->isbn[$index],
+            'is_hard_copy' => $request->input('is_hard_copy.' . $index, false),
+            'is_online' => $request->input('is_online.' . $index, false),
+            'note' => $request->note[$index],
+            'author' => $request->author[$index],
+            'publisher' => $request->publisher[$index],
+            'publish_date' => $request->publish_date[$index],
+            'edition' => $request->edition[$index],
+        ]);
+    }
+    
+    return redirect()->route('material')->with('success', 'Các Material đã được tạo thành công.');
+}
+
     
 
     public function edit($id)

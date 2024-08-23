@@ -17,7 +17,7 @@ class HomeController extends Controller
     public function index()
     {
         $majors = Major::all();
-        return view('dashboard')->with('majors', $majors);
+        return view('user/index')->with('majors', $majors);
     }
 
     public function showDetail($id)

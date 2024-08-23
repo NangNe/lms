@@ -5,121 +5,239 @@
         </h2>
     </x-slot>
 
+    <!-- Thêm các liên kết CSS của Bootstrap -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <a href="{{ route('material') }}">Back</a>
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <div class="py-12">
-                        <h1>Tạo Material</h1>
+    <style>
+        /* Tùy chỉnh bảng */
+        .table thead th {
+            text-align: center;
+            vertical-align: middle;
+        }
 
-                        <form action="{{ route('material.store') }}" method="POST">
-                            @csrf
-                            <div id="materials-container">
-                                <div class="material-group">
-                                    <div class="form-group">
-                                        <label for="course_id" class="form-label">Chọn Khóa Học</label>
-                                        <select id="course_id" name="course_id[]" class="form-control select2" required>
+        .table tbody td {
+            vertical-align: middle;
+        }
+
+        .remove-material {
+            cursor: pointer;
+            color: red;
+        }
+
+        .material .form-control.course-select {
+            flex: 2;
+            /* Tăng giá trị flex để cột dài hơn */
+            min-width: 200px;
+            /* Điều chỉnh chiều rộng tối thiểu nếu cần */
+        }
+    </style>
+
+    <div class="py-16">
+        <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
+            <a href="{{ route('material') }}">Back</a>
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-4">
+                <div class="p-6 text-gray-900">
+                    <h1 class="mb-3">Tạo Material</h1>
+                    <form action="{{ route('material.store') }}" method="POST">
+                        @csrf
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Chọn Khóa Học</th>
+                                    <th>Mô tả Material</th>
+                                    <th>ISBN</th>
+                                    <th>Ghi chú</th>
+                                    <th>Tác giả</th>
+                                    <th>Nhà xuất bản</th>
+                                    <th>Ngày xuất bản</th>
+                                    <th>Phiên bản</th>
+                                    <th>Is Main Material</th>
+                                    <th>Is Hard Copy</th>
+                                    <th>Is Online</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="materials-table-body">
+                                <tr>
+                                    <td>
+                                        <select id="course_id" name="course_id[]" class="form-control course-select select2" required>
                                             @foreach ($allcourses as $course)
                                                 <option value="{{ $course->id }}">{{ $course->code }} - {{ $course->name }}</option>
                                             @endforeach
                                         </select>
-                                    </div>
-                                    
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label for="description_material" class="form-label">Mô Tả</label>
-                                            <input type="text" class="form-control" name="description_material[]"
-                                                value="{{ old('description_material') }}">
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <label for="isbn" class="form-label">ISBN</label>
-                                            <input type="text" class="form-control" name="isbn[]" value="{{ old('isbn') }}">
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <label for="author" class="form-label">Tác Giả</label>
-                                            <input type="text" class="form-control" name="author[]" value="{{ old('author') }}">
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label for="publisher" class="form-label">Nhà Xuất Bản</label>
-                                            <input type="text" class="form-control" name="publisher[]" value="{{ old('publisher') }}">
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <label for="publish_date" class="form-label">Ngày Xuất Bản</label>
-                                            <input type="date" class="form-control" name="publish_date[]" value="{{ old('publish_date') }}">
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <label for="edition" class="form-label">Phiên Bản</label>
-                                            <input type="text" class="form-control" name="edition[]" value="{{ old('edition') }}">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-check">
-                                        <input type="checkbox" name="is_main_material[]" class="form-check-input" value="1"
-                                            {{ old('is_main_material') ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="is_main_material">Is Main Material</label>
-                                    </div>
-
-                                    <div class="form-check">
-                                        <input type="checkbox" name="is_hard_copy[]" class="form-check-input" value="1"
-                                            {{ old('is_hard_copy') ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="is_hard_copy">Is Hard Copy</label>
-                                    </div>
-
-                                    <div class="form-check">
-                                        <input type="checkbox" name="is_online[]" class="form-check-input" value="1"
-                                            {{ old('is_online') ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="is_online">Is Online</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="note" class="form-label">Note</label>
-                                        <input type="text" class="form-control" name="note" value="{{ old('note') }}">
-                                    </div>                              
-                                    <button type="button" class="btn btn-danger remove-material">Remove</button>
-                                    <hr>
-                                </div>
-                            </div>
-                            <button type="button" class="btn btn-secondary" id="add-material">Add More</button>
-                            <button type="submit" class="btn btn-primary">Lưu</button>
-                        </form>
-                        
-                    </div>
+                                        @error('course_id')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="description_material[]" required>
+                                        @error('description_material')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="isbn[]">
+                                        @error('isbn')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control" name="note[]"></textarea>
+                                        @error('note')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="author[]">
+                                        @error('author')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="publisher[]">
+                                        @error('publisher')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </td>
+                                    <td>
+                                        <input type="date" class="form-control" name="publish_date[]">
+                                        @error('publish_date')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="edition[]">
+                                        @error('edition')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="hidden" name="is_main_material[]" value="0">
+                                        <input type="checkbox" name="is_main_material[]" value="1">
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="hidden" name="is_hard_copy[]" value="0">
+                                        <input type="checkbox" name="is_hard_copy[]" value="1">
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="hidden" name="is_online[]" value="0">
+                                        <input type="checkbox" name="is_online[]" value="1">
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="remove-material">&times;</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button type="button" id="add-material" class="btn btn-secondary mb-3">Add More</button>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+
+    {{-- <!-- Thêm các liên kết JS của jQuery và Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> --}}
+
+    <!-- Thêm liên kết JS cho Select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Khởi tạo Select2
+            $('.select2').select2({
+                placeholder: "Chọn Khóa học",
+                allowClear: true
+            });
+
+            // Hàm để thêm một hàng mới
+            $('#add-material').click(function() {
+                var newRow = `
+                    <tr>
+                        <td>
+                            <select name="course_id[]" class="form-control select2" required>
+                                @foreach ($allcourses as $course)
+                                    <option value="{{ $course->id }}">{{ $course->code }} - {{ $course->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('course_id')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="description_material[]" required>
+                            @error('description_material')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="isbn[]">
+                            @error('isbn')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </td>
+                        <td>
+                            <textarea class="form-control" name="note[]"></textarea>
+                            @error('note')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="author[]">
+                            @error('author')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="publisher[]">
+                            @error('publisher')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </td>
+                        <td>
+                            <input type="date" class="form-control" name="publish_date[]">
+                            @error('publish_date')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="edition[]">
+                            @error('edition')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </td>
+                        <td class="text-center">
+                            <input type="hidden" name="is_main_material[]" value="0">
+                            <input type="checkbox" name="is_main_material[]" value="1">
+                        </td>
+                        <td class="text-center">
+                            <input type="hidden" name="is_hard_copy[]" value="0">
+                            <input type="checkbox" name="is_hard_copy[]" value="1">
+                        </td>
+                        <td class="text-center">
+                            <input type="hidden" name="is_online[]" value="0">
+                            <input type="checkbox" name="is_online[]" value="1">
+                        </td>
+                        <td class="text-center">
+                            <span class="remove-material">&times;</span>
+                        </td>
+                    </tr>
+                `;
+                $('#materials-table-body').append(newRow);
+                // Khởi tạo lại Select2 cho các phần tử mới
+                $('.select2').select2({
+                    placeholder: "Chọn Khóa học",
+                    allowClear: true
+                });
+            });
+
+            // Hàm để xóa một hàng
+            $(document).on('click', '.remove-material', function() {
+                $(this).closest('tr').remove();
+            });
+        });
+    </script>
 </x-app-layout>
-
-<script>
-    $(document).ready(function() {
-        $('.select2').select2({
-            placeholder: "Chọn Khóa học",
-            allowClear: true
-        });
-
-        // Clone the first material-group and append it to the container
-        $('#add-material').on('click', function() {
-            const materialGroup = $('.material-group').first().clone();
-            // Reset input values
-            materialGroup.find('input').val('');
-            materialGroup.find('select').val($('#course_id').val()).trigger('change');
-            $('#materials-container').append(materialGroup);
-        });
-
-        // Remove the material-group
-        $(document).on('click', '.remove-material', function() {
-            if ($('.material-group').length > 1) {
-                $(this).closest('.material-group').remove();
-            }
-        });
-    });
-</script>

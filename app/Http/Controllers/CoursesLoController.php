@@ -29,7 +29,6 @@ class CoursesLoController extends Controller
         return view('admin.courses_lo.index', compact('coursesLo', 'allcourses'));
     }
 
-
     public function create()
     {
         if (Auth::user()->usertype !== 'lecturer') {
@@ -46,47 +45,6 @@ class CoursesLoController extends Controller
         }
         return view('admin.courses_lo.create', compact('allcourses', 'courses_lo'));
     }
-
-    // public function store(Request $request)
-    // {
-    //     if (Auth::user()->usertype !== 'lecturer') {
-    //         return redirect()->back()->with('error', 'Bạn không có quyền tạo CoursesLo.');
-    //     }
-    //     $data = $request->validate([
-    //         'course_id.*' => 'required|exists:courses,id',
-    //         'name.*' => 'required|string',
-    //         'detail' => 'nullable|string',
-    //         'knowledge' => 'nullable|string',
-    //         'skills' => 'nullable|string',
-    //         'autonomy_responsibility' => 'nullable|string',
-    //         // Add validation rules for other fields
-    //     ]);
-
-    //     $user = Auth::user();
-
-    //     if ($user->usertype === 'lecturer') {
-    //         // Kiểm tra nếu khóa học thuộc về giảng viên
-    //         if (!$user->courses->pluck('id')->contains($request->course_id)) {
-    //             return redirect()->back()->with('error', 'Bạn không có quyền thêm assignment cho khóa học này.');
-    //         }
-    //     }
-
-
-    //     foreach ($data['course_id'] as $index => $course_id) {
-    //         CoursesLO::create([
-    //             'course_id' => $course_id,
-    //             'name' => $data['name'][$index],
-    //             'detail' => $request->detail,
-    //             'knowledge' => $request->knowledge,
-    //             'skills' => $request->skills,
-    //             'autonomy_responsibility' => $request->autonomy_responsibility,
-    //             // Add other fields
-    //         ]);
-    //     }
-
-
-    //     return redirect()->route('courses_lo')->with('success', 'CoursesLo đã được tạo thành công.');
-    // }
 
     public function store(Request $request)
 {

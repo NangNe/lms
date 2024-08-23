@@ -1,4 +1,6 @@
-<x-app-layout>
+@extends('layouts.index')
+
+@section('content')
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             Chi tiếc khóa học {{ $courses->name }}
@@ -289,4 +291,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

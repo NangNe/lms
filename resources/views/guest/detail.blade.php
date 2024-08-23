@@ -1,28 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.index')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-
-<body>
+@section('content')
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        Chi tiếc khóa học {{ $courses->name }}
+        Chi tiết khóa học {{ $courses->name }}
     </h2>
-    <style>
+    {{-- <style>
         .table {
             width: 100%;
             margin-bottom: 1rem;
             color: #292121;
             border-collapse: collapse;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            border-radius: 8px;
         }
 
         .table th,
         .table td {
-            padding: 0.75rem;
+            padding: 12px;
             vertical-align: top;
             border-top: 1px solid #5b6771;
         }
@@ -40,12 +35,50 @@
         .table tbody tr:hover {
             background-color: #e9ecef;
         }
-    </style>
+
+        a {
+            color: #4a76a8;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f6f9;
+            border-radius: 8px;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #4a76a8;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: #4a76a8;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .btn-back:hover {
+            background-color: #3a5a8c;
+        }
+    </style> --}}
 
     <div class="container">
+        <a href="{{ url()->previous() }}" class="btn-back">Quay lại</a>
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <a href="{{ url()->previous() }}">Back</a>
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-1200">
                         <div class="container">
@@ -58,6 +91,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <td>{{ $courses->id }}</td>
+                                    </tr>
                                     <tr>
                                         <th>Tên khóa học</th>
                                         <td>{{ $courses->name }}</td>
@@ -75,7 +109,7 @@
                                         <td>{{ $courses->credits }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Time Allocation:</th>
+                                        <th>Time Allocation</th>
                                         <td>{{ $courses->time_allocation }}</td>
                                     </tr>
                                     <tr>
@@ -125,7 +159,6 @@
                                         <th>IsActive</th>
                                         <td>{{ $courses->is_active ? 'Yes' : 'No' }}</td>
                                     </tr>
-
                                 </tbody>
                             </table>
                         </div>
@@ -155,7 +188,7 @@
                                         <td>
                                             @if ($assignment->coursesLo->isNotEmpty())
                                                 @foreach ($assignment->coursesLo as $courseLo)
-                                                    <p>{{ $courseLo->name }}</p> <!-- Hiển thị tên của CLO -->
+                                                    <p>{{ $courseLo->name }}</p>
                                                 @endforeach
                                             @else
                                                 Không có CLO
@@ -169,13 +202,9 @@
                                 @endforeach
                             </tbody>
                         </table>
-
-
                     </div>
                 </div>
             </div>
-
-
-</body>
-
-</html>
+        </div>
+    </div>
+@endsection

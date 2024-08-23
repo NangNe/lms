@@ -19,6 +19,7 @@ use App\Http\Controllers\GuestController;
 Route::get('/', function () {
     return view('welcome');
 });
+
 // guest
 Route::get('/guest', [GuestController::class, 'index'])->name('guest.index');
 Route::get('/guest/{id}/courses', [GuestController::class, 'showCourses'])->name('guest.courses');
@@ -26,16 +27,16 @@ Route::get('/guest/detail/{id}', [GuestController::class, 'showDetail'])->name('
  
 // user
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
+    Route::get('/user', [HomeController::class, 'index'])->name('user.index');
     Route::get('/user/detail/{id}', [HomeController::class, 'showDetail'])->name('user.detail');
     Route::get('/user/courses/{id}', [HomeController::class, 'showCourses'])->name('user.courses');
 });
 
 // Auth::routes();
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', function () {
+    return view('admin.dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 
 Route::middleware('auth')->group(function () {
@@ -55,6 +56,7 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 Route::middleware(['auth', LecturerMiddleware::class])->group(function () {
     Route::get('/admin/user', [AdminController::class, 'getUsers'])->name('admin.user'); // Lecturers có quyền xem danh sách người dùng
     // Route::get('/lecturer/manage', [AdminController::class, 'manageLecturer'])->name('lecturer.manage');
+    
 });
 
 // Routes for major
@@ -102,6 +104,12 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function() {
 });
 
 //ROute for lecturer permission
+Route::prefix('lecturer')->middleware(['auth', 'lecturer'])->group(function () {
+    Route::get('/majors', [MajorController::class, 'showMajor'])->name('majors');
+    Route::get('/courses', [CourseController::class, 'index'])->name('courses');
+});
+
+
 
 Route::prefix('lecturer')->middleware(['auth', 'lecturer'])->group(function() {
     Route::get('/lessons', [LessonsController::class, 'index'])->name('lessons.index');

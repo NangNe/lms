@@ -48,10 +48,12 @@ class AssignmentsController extends Controller
 
     public function store(Request $request)
     {
+        // Kiểm tra quyền của người dùng
         if (Auth::user()->usertype !== 'lecturer') {
             return redirect()->back()->with('error', 'Bạn không có quyền tạo Assignments.');
         }
-    
+
+        // Xác thực dữ liệu
         $request->validate([
             'course_id.*' => 'required|exists:courses,id',
             'component_name.*' => 'required|string|max:255',
@@ -62,15 +64,15 @@ class AssignmentsController extends Controller
             'clo_weight.*' => 'nullable|numeric',
             'plos.*' => 'nullable|string',
         ]);
-    
+
         $user = Auth::user();
-    
+
         foreach ($request->course_id as $index => $courseId) {
             // Kiểm tra nếu khóa học thuộc về giảng viên
             if ($user->usertype === 'lecturer' && !$user->courses->pluck('id')->contains($courseId)) {
                 return redirect()->route('assignments.index')->with('error', 'Bạn không có quyền thêm assignment cho khóa học này.');
             }
-    
+
             // Tạo mới assignment
             $assignment = Assignments::create([
                 'course_id' => $courseId,
@@ -81,17 +83,18 @@ class AssignmentsController extends Controller
                 'clo_weight' => $request->clo_weight[$index] ?? null,
                 'plos' => $request->plos[$index] ?? null,
             ]);
-    
+
             // Liên kết CLOs nếu có
             if (isset($request->clo_ids[$index])) {
                 $assignment->coursesLo()->sync($request->clo_ids[$index]);
             }
         }
-    
+
         return redirect()->route('assignments.index')
-            ->with('success', 'Assignments created successfully.');
+            ->with('success', 'Assignments đã được tạo thành công.');
     }
-    
+
+
 
 
 
@@ -103,7 +106,7 @@ class AssignmentsController extends Controller
             return redirect()->back()->with('error', 'Bạn không có quyền sửa lessons.');
         }
         $user = Auth::user();
-        
+
         if ($user->usertype === 'lecturer' && !$user->courses->pluck('id')->contains($assignment->course_id)) {
             return redirect()->route('assignments.index')->with('error', 'Bạn không có quyền chỉnh sửa assignment này.');
         }

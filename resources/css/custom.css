@@ -1,0 +1,132 @@
+/* Cải thiện giao diện của thông báo */
+.notification, .notification_error {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 5px;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    opacity: 1;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateY(-20px);
+}
+
+.notification {
+    background-color: #28a745; /* Màu xanh cho thông báo thành công */
+}
+
+.notification_error {
+    background-color: #dc3545; /* Màu đỏ cho thông báo lỗi */
+}
+
+.notification.show {
+    transform: translateY(0);
+}
+
+/* Cải thiện style của table */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #495057;
+    border-collapse: collapse;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+}
+
+.table th, .table td {
+    padding: 1rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    text-align: left;
+    color: #212529;
+}
+
+.table tbody tr:nth-of-type(odd) {
+    background-color: #f2f2f2;
+}
+
+.table tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+.table td {
+    color: #495057;
+}
+
+/* Cải thiện layout và typography */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #333;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Cải thiện style của button và input */
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+input[type="text"], input[type="email"], input[type="password"], textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Cải thiện responsive design */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .table th, .table td {
+        padding: 0.5rem;
+    }
+}
