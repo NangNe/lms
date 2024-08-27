@@ -41,32 +41,7 @@
                     </table>
 
                 </div>
-                <style>
-                    body {
-                        font-family: Arial, sans-serif;
-                        margin: 0;
-                        padding: 20px;
-                    }
 
-                    .container {
-                        max-width: 800px;
-                        margin: 0 auto;
-                    }
-
-                    .major {
-                        border: 1px solid #ccc;
-                        padding: 10px;
-                        margin-bottom: 10px;
-                    }
-
-                    .major h2 {
-                        margin: 0;
-                    }
-
-                    .courses {
-                        margin-top: 10px;
-                    }
-                </style>
                 <script>
                     $(document).ready(function() {
                         $('#coursesTable1').DataTable();

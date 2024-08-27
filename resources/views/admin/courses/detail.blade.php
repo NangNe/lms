@@ -11,6 +11,7 @@
             margin-bottom: 1rem;
             color: #292121;
             border-collapse: collapse;
+            
         }
 
         .table th,
@@ -24,15 +25,17 @@
             background-color: #f8f9fa;
             font-weight: bold;
             text-align: left;
+            color: #000000
         }
 
         .table tbody tr:nth-of-type(odd) {
-            background-color: #f2f2f2;
+            background-color: #bcb1b1;
         }
 
         .table tbody tr:hover {
             background-color: #e9ecef;
         }
+
     </style>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

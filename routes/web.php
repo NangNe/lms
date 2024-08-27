@@ -121,6 +121,8 @@ Route::prefix('lecturer')->middleware(['auth', 'lecturer'])->group(function() {
     Route::get('/download/{filename}', [LessonsController::class, 'download'])->name('download');
     Route::get('/lessons/{courseId}/clos', [LessonsController::class, 'getClos']);
     Route::get('/admin/courses/{courseId}/clos', [LessonsController::class, 'getClosByCourse'])->name('courses.clos');
+    Route::get('/get-clos', [LessonsController::class, 'getClos'])->name('getClos');
+
 });
 
 Route::prefix('lecturer')->middleware(['auth', 'lecturer'])->group(function () {

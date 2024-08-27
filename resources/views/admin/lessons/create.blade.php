@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Tạo Lessons Mới') }}
+            {{ __('Tạo Bài Giảng Mới') }}
         </h2>
     </x-slot>
 
@@ -11,6 +11,16 @@
                 @csrf
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                         <div class="mb-4">
                             <label for="course_id" class="form-label">Khóa học</label>
                             <select id="course_id" name="course_id" class="form-control">
@@ -55,7 +65,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="s_download" class="form-label">Documents</label>
+                            <label for="s_download" class="form-label">Tài liệu đính kèm</label>
                             <input type="file" id="s_download" name="s_download" class="form-control">
                         </div>
 
@@ -71,7 +81,7 @@
 <script>
     $(document).ready(function() {
         $('.select2').select2({
-            placeholder: "Chọn Khóa học",
+            placeholder: "Chọn CLOs",
             allowClear: true
         });
 

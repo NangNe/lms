@@ -14,7 +14,7 @@ class Lessons extends Model
         'topic',
         'number_of_periods',
         'objectives',
-        'clos',
+        'clos', // Nếu 'clos' là tên của cột trong bảng, có thể cần kiểm tra lại
         'lecture_method',
         'active',
         's_download'
@@ -24,9 +24,11 @@ class Lessons extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
+    // Quan hệ nhiều-nhiều với CoursesLo thông qua bảng trung gian course_lesson
     public function coursesLo()
-{
-    return $this->belongsToMany(CoursesLo::class, 'course_lesson', 'lesson_id', 'course_lo_id');
-}
+    {
+        return $this->belongsToMany(CoursesLo::class, 'course_lesson', 'lesson_id', 'course_lo_id');
+    }
 }
 

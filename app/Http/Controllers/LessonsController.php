@@ -13,7 +13,7 @@ class LessonsController extends Controller
 {
     public function index()
 
-    {   
+    {
         $user = Auth::user();
         $query = Lessons::query();
         if ($user->usertype === 'lecturer') {
@@ -43,9 +43,12 @@ class LessonsController extends Controller
 
     public function store(Request $request)
     {
+        // Kiểm tra quyền của người dùng
         if (Auth::user()->usertype !== 'lecturer') {
-            return redirect()->back()->with('error', 'Bạn không có quyền tạo lessons.');
+            return redirect()->back()->with('error', 'Bạn không có quyền tạo bài giảng.');
         }
+
+        // Xác thực dữ liệu đầu vào
         $request->validate([
             'course_id' => 'required|exists:courses,id',
             'clos' => 'array',
@@ -58,8 +61,8 @@ class LessonsController extends Controller
             's_download' => 'nullable|file|mimes:pdf,png,jpg,doc,docx,ppt,pptx,xls,xlsx,zip'
         ]);
 
+        // Kiểm tra khóa học thuộc về giảng viên
         $user = Auth::user();
-
         if ($user->usertype === 'lecturer') {
             $courseIds = $user->courses->pluck('id')->toArray();
             if (!in_array($request->course_id, $courseIds)) {
@@ -67,6 +70,7 @@ class LessonsController extends Controller
             }
         }
 
+        // Tạo bài giảng mới
         $lesson = new Lessons();
         $lesson->course_id = $request->course_id;
         $lesson->topic = $request->topic;
@@ -75,6 +79,8 @@ class LessonsController extends Controller
         $lesson->clos = $request->clos ? implode(',', $request->clos) : null;
         $lesson->lecture_method = $request->lecture_method;
         $lesson->active = $request->active;
+
+        // Xử lý file đính kèm
         if ($request->hasFile('s_download')) {
             $file = $request->file('s_download');
             $filename = time() . '-' . $file->getClientOriginalName();
@@ -85,9 +91,9 @@ class LessonsController extends Controller
         $lesson->save();
         $lesson->coursesLo()->sync($request->clos);
 
-        return redirect()->route('lessons.index')
-            ->with('success', 'lessons created successfully.');
+        return redirect()->route('lessons.index')->with('success', 'Bài giảng đã được tạo thành công.');
     }
+
 
     public function edit(Lessons $lesson)
     {
@@ -123,7 +129,7 @@ class LessonsController extends Controller
             'active' => 'nullable|string',
             's_download' => 'nullable|file|mimes:pdf,png,jpg,doc,docx,ppt,pptx,xls,xlsx,zip'
         ]);
-        $user = Auth::user(); 
+        $user = Auth::user();
 
         $lesson->course_id = $request->course_id;
         $lesson->topic = $request->topic;

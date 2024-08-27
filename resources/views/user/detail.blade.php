@@ -6,36 +6,8 @@
             Chi tiếc khóa học {{ $courses->name }}
         </h2>
     </x-slot>
-    </style>
-    <style>
-        .table {
-            width: 100%;
-            margin-bottom: 1rem;
-            color: #292121;
-            border-collapse: collapse;
-        }
 
-        .table th,
-        .table td {
-            padding: 0.75rem;
-            vertical-align: top;
-            border-top: 1px solid #5b6771;
-        }
 
-        .table th {
-            background-color: #f8f9fa;
-            font-weight: bold;
-            text-align: left;
-        }
-
-        .table tbody tr:nth-of-type(odd) {
-            background-color: #f2f2f2;
-        }
-
-        .table tbody tr:hover {
-            background-color: #e9ecef;
-        }
-    </style>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <a href="{{ url()->previous() }}">Back</a>
@@ -207,7 +179,6 @@
                     <table class="table" >
                         <thead>
                             <tr>
-                                <th>Khóa học</th>
                                 <th>Nội dung</th>
                                 <th>Số buổi</th>
                                 <th>Mục tiêu</th>
@@ -220,7 +191,6 @@
                         <tbody>
                             @foreach ($lessons as $lesson)
                                 <tr>
-                                    <td>{{ $lesson->course->name }}</td>
                                     <td>{{ $lesson->topic }}</td>
                                     <td>{{ $lesson->number_of_periods }}</td>
                                     <td>{{ $lesson->objectives }}</td>

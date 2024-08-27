@@ -27,6 +27,8 @@
 </head>
 
 <body class="font-sans antialiased">
+
+
     <div class="min-h-screen bg-gray-100">
         @if (Auth::check())
             @include('layouts.user_navigation')
@@ -55,50 +57,23 @@
         @endisset
 
         <!-- Page Content -->
-        <main>
+        <main style="margin-bottom: 75px; margin-top: 75px">
             @yield('content')
         </main>
+        <footer style="background-color: #ffffff; padding: 20px 0; font-family: Arial, sans-serif;">
+            <div style="text-align: center; color: #000000; margin-bottom: 10px; font-weight: bold;">
+                Copyright © 2017-2024 - Trường Đại học Công nghệ Thông tin &amp; Truyền Thông Việt - Hàn, Đại học Đà Nẵng
+            </div>
+            <div style="color: #4a4949; text-align: center; font-size: 14px; line-height: 1.6;">
+                <div><span class="glyphicon glyphicon-home"></span> Địa chỉ: 41 Lê Duẩn, Hải Châu, Thành phố Đà Nẵng | Khu Đô thị
+                    Đại học Đà Nẵng, Đường Nam Kỳ Khởi Nghĩa, quận Ngũ Hành Sơn, Đà Nẵng
+                </div>
+                <div><span class="glyphicon glyphicon-phone-alt"></span> Điện thoại: 0236.6.552.688</div>
+                <div><span class="glyphicon glyphicon-envelope"></span> Email: daotao@vku.udn.vn</div>
+            </div>
+        </footer>
     </div>
 
-    <style>
-        .notification {
-            position: fixed;
-            top: 75px;
-            right: 0px;
-            padding: 15px;
-            background-color: #00ff3c;
-            border-radius: 5px;
-            z-index: 1000;
-            box-shadow: 0 0 10px rgb(0, 0, 0);
-            opacity: 1;
-            transition: opacity 0.5s ease;
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        .notification_error {
-            position: fixed;
-            top: 75px;
-            right: 0px;
-            padding: 15px;
-            background-color: #ff3333;
-            border-radius: 5px;
-            z-index: 1000;
-            box-shadow: 0 0 10px rgb(0, 0, 0);
-            opacity: 1;
-            transition: opacity 0.5s ease;
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-    </style>
 
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
