@@ -8,6 +8,8 @@ use App\Models\Course;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CoursesLo;
 use Illuminate\Support\Facades\Auth;
+use ZipArchive;
+use Illuminate\Support\Facades\Log;
 
 class LessonsController extends Controller
 {
@@ -180,16 +182,62 @@ class LessonsController extends Controller
             ->with('success', 'lesson deleted successfully.');
     }
 
-    public function download($filename)
+    public function downloadAll($courseId)
     {
-        $filePath = 'uploads/' . $filename;
-
-        if (Storage::disk('public')->exists($filePath)) {
-            return response()->download(storage_path('app/public/' . $filePath));
+        // Lấy danh sách các bài giảng của môn học được chỉ định
+        $lessons = Lessons::where('course_id', $courseId)->get();
+        
+        if ($lessons->isEmpty()) {
+            return redirect()->back()->with('error', 'Không có bài giảng nào cho môn học này.');
+        }
+        
+        // Cập nhật đường dẫn lưu trữ chính xác
+        $storagePath = storage_path('app/public/uploads/');
+        $zipFileName = 'All lesson files.zip';
+        $zipPath = $storagePath . $zipFileName;
+    
+        // Xóa file zip cũ nếu tồn tại
+        if (file_exists($zipPath)) {
+            unlink($zipPath);
+        }
+    
+        $zip = new ZipArchive;
+        if ($zip->open($zipPath, ZipArchive::CREATE) === TRUE) {
+            $filesAdded = false;
+            foreach ($lessons as $lesson) {
+                if ($lesson->s_download) {
+                    // Cập nhật đường dẫn tệp tin
+                    $filePath = $storagePath . $lesson->s_download;
+                    Log::info("Checking file path: " . $filePath);
+                    if (file_exists($filePath)) {
+                        $zip->addFile($filePath, basename($filePath));
+                        $filesAdded = true;
+                    } else {
+                        Log::error("File không tồn tại: " . $filePath);
+                    }
+                }
+            }
+            $zip->close();
+    
+            if (!$filesAdded) {
+                Log::error("Không có tệp nào được thêm vào ZIP.");
+                return redirect()->back()->with('error', 'Không có tệp nào để nén.');
+            }
         } else {
-            return redirect()->back()->with('error', 'File không tồn tại.');
+            Log::error("Không thể mở hoặc tạo file zip tại: " . $zipPath);
+            return redirect()->back()->with('error', 'Không thể tạo file zip.');
+        }
+    
+        if (file_exists($zipPath)) {
+            return response()->download($zipPath)->deleteFileAfterSend(true);
+        } else {
+            return redirect()->back()->with('error', 'File zip không tồn tại hoặc không thể tạo.');
         }
     }
+    
+    
+    
+
 
     public function getClos($courseId)
     {

@@ -11,7 +11,7 @@
             margin-bottom: 1rem;
             color: #292121;
             border-collapse: collapse;
-            
+
         }
 
         .table th,
@@ -35,7 +35,6 @@
         .table tbody tr:hover {
             background-color: #e9ecef;
         }
-
     </style>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -44,7 +43,8 @@
                 <div class="p-6 text-gray-1200">
                     <div class="container">
                         @if ($courses->syllabus)
-                       <a href="{{ Storage::url('uploads/' . $courses->syllabus) }}" target="_blank">Tải xuống đề cương</a>
+                            <a href="{{ Storage::url('uploads/' . $courses->syllabus) }}" target="_blank">Tải xuống đề
+                                cương</a>
                         @endif
 
                         <table class="table">
@@ -206,6 +206,10 @@
             <h2>Danh sách Lessons</h2>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-1200">
+                    <a href="{{ route('lessons.downloadAll', ['courseId' => $courses->id]) }}">Download All</a>
+
+
+
                     <table class="table">
                         <thead>
                             <tr>

@@ -13,7 +13,6 @@
             <table>
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Tên</th>
                         <th>Email</th>
                     </tr>
@@ -21,7 +20,6 @@
                 <tbody>
                     @foreach ($users as $user)
                         <tr>
-                            <td>{{ $user->id }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                         </tr>
@@ -35,7 +33,6 @@
             <table>
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Tên</th>
                         <th>Email</th>
                     </tr>
@@ -43,7 +40,6 @@
                 <tbody>
                     @foreach ($lecturers as $lecturer)
                         <tr>
-                            <td>{{ $lecturer->id }}</td>
                             <td>{{ $lecturer->name }}</td>
                             <td>{{ $lecturer->email }}</td>
                         </tr>
