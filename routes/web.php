@@ -30,7 +30,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/user', [HomeController::class, 'index'])->name('user.index');
     Route::get('/user/detail/{id}', [HomeController::class, 'showDetail'])->name('user.detail');
     Route::get('/user/courses/{id}', [HomeController::class, 'showCourses'])->name('user.courses');
+    Route::get('lessons/download-all/{courseId}', [LessonsController::class, 'downloadAll'])->name('lessons.downloadAll');
 });
+
 
 // Auth::routes();
 
@@ -122,7 +124,7 @@ Route::prefix('lecturer')->middleware(['auth', 'lecturer'])->group(function() {
     Route::get('/lessons/{courseId}/clos', [LessonsController::class, 'getClos']);
     Route::get('/admin/courses/{courseId}/clos', [LessonsController::class, 'getClosByCourse'])->name('courses.clos');
     Route::get('/get-clos', [LessonsController::class, 'getClos'])->name('getClos');
-    Route::get('lessons/download-all/{courseId}', [LessonsController::class, 'downloadAll'])->name('lessons.downloadAll');
+    // Route::get('lessons/download-all/{courseId}', [LessonsController::class, 'downloadAll'])->name('lessons.downloadAll');
 
 
 });

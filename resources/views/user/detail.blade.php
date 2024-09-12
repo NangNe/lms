@@ -175,6 +175,8 @@
 
             <h2>Danh sách Lessons</h2>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <a href="{{ route('lessons.downloadAll', ['courseId' => $courses->id]) }}">Download All</a>
+
                 <div class="p-6 text-gray-1200">
                     <table class="table" >
                         <thead>
@@ -210,8 +212,6 @@
                                         <a href="{{ Storage::url('uploads/' . $lesson ->s_download) }}" target="_blank">{{$lesson->s_download}}</a>
                                          @endif
                                     </td>
-
-
 
                                 </tr>
                             @endforeach
