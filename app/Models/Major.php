@@ -34,5 +34,10 @@ class Major extends Model
     {
         return $this->belongsToMany(Course::class, 'major_courses');
     }
+
+    public function plos()
+    {
+        return $this->hasMany(Plo::class, 'major_id');
+    }
 }
 

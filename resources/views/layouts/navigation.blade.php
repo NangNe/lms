@@ -26,6 +26,10 @@
                     <x-nav-link :href="url('/admin/majors')" :active="request()->routeIs('majors')">
                         {{ __('Major') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="url('/admin/plos')" :active="request()->routeIs('plos')">
+                        {{ __('PLO') }}
+                    </x-nav-link>
                 
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">

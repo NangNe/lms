@@ -14,7 +14,7 @@ use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\AssignmentsController;
 use App\Http\Controllers\LessonsController;
 use App\Http\Controllers\GuestController;
-
+use App\Http\Controllers\PloController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -156,6 +156,14 @@ Route::prefix('lecturer')->middleware(['auth', 'lecturer'])->group(function () {
     Route::delete('/material/{id}', [MaterialController::class, 'destroy'])->name('material.destroy'); // Xóa
 });
 
+Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
+    Route::get('/plos', [PloController::class, 'index'])->name('plos.index');
+    Route::get('/plos/create', [PloController::class, 'create'])->name('plos.create');
+    Route::post('/plos', [PloController::class, 'store'])->name('plos.store');
+    Route::get('plos/{id}/edit', [PloController::class, 'edit'])->name('plos.edit');
+    Route::put('plos/{id}', [PloController::class, 'update'])->name('plos.update');
+    Route::delete('plos/{id}', [PloController::class, 'destroy'])->name('plos.destroy');
+});
 
 
 require __DIR__ . '/auth.php';

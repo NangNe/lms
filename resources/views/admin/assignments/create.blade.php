@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-10xl mx-auto sm:px-6 lg:px-8">
             <a href="{{ route('assignments.index') }}">Back</a>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
@@ -49,7 +49,7 @@
 
                             <div class="mb-3">
                                 <label for="clo_ids" class="form-label">CLO</label>
-                                <select id="clo_ids" name="clo_ids[]" class="form-control select2" multiple>
+                                <select id="clo_ids" name="clo_ids[]" class="form-control select3" multiple>
                                     @foreach ($courselos as $clo)
                                         <option value="{{ $clo->id }}">{{ $clo->name }}-{{$clo->detail}}</option>
                                     @endforeach
@@ -106,6 +106,12 @@
     $(document).ready(function() {
         $('.select2').select2({
             placeholder: "Chọn Khóa học",
+            allowClear: true
+        });
+    });
+    $(document).ready(function() {
+        $('.select3').select2({
+            placeholder: "Chọn CLO",
             allowClear: true
         });
     });
