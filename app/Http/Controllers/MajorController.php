@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Major;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Course;
+use App\Models\Plo;
 
 class MajorController extends Controller
 {
@@ -131,6 +132,11 @@ class MajorController extends Controller
         }
 
         $majors = Major::with('courses')->findOrFail($id);
-        return view('admin/major/courses', compact('majors'));
+        $major = Major::with('plos')->findOrFail($id);
+        $ploCount = $major->plos->count();
+        $courseCount = $majors->courses->count();
+        $creditCount = $majors->courses->sum('credits');
+        
+        return view('admin/major/courses', compact('majors', 'major', 'ploCount', 'courseCount', 'creditCount'));
     }
 }

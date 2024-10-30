@@ -234,11 +234,20 @@ class LessonsController extends Controller
             return redirect()->back()->with('error', 'File zip không tồn tại hoặc không thể tạo.');
         }
     }
-    
-    
-    
 
+        public function download($filename)
+    {
+        $filePath = 'uploads/' . $filename;
 
+        if (Storage::disk('public')->exists($filePath)) {
+            return response()->download(storage_path('app/public/' . $filePath));
+        } else {
+            return redirect()->back()->with('error', 'File không tồn tại.');
+        }
+    }
+    
+    
+    
     public function getClos($courseId)
     {
         // Lấy danh sách các CLOs liên quan đến course_id

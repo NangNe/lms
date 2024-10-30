@@ -28,6 +28,10 @@ class GuestController extends Controller
     public function showCourses($id)
     {
         $majors = Major::with('courses')->findOrFail($id);
-        return view('guest/course', compact('majors'));
+        $major = Major::with('plos')->findOrFail($id);
+        $ploCount = $major->plos->count();
+        $courseCount = $majors->courses->count();
+        $creditCount = $majors->courses->sum('credits');
+        return view('guest/course', compact('majors', 'major', 'ploCount', 'courseCount', 'creditCount'));
     }
 }

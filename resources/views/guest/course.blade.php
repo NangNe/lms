@@ -1,95 +1,59 @@
 @extends('layouts.index')
 
 @section('content')
-    {{-- <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f6f9;
-            color: #333;
-        }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+    <div class="container" style="margin-top: -70px">
+        <h1>Chi tiết chương trình giảng dạy</h1>
 
-        h1 {
-            text-align: center;
-            font-size: 28px;
-            margin-bottom: 20px;
-            color: #4a76a8;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        th,
-        td {
-            text-align: left;
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #4a76a8;
-            color: #fff;
-        }
-
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-
-        a {
-            color: #4a76a8;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .fa-arrow-right {
-            margin-left: 5px;
-        }
-
-        .table {
-            margin-top: 20px;
-        }
-
-        /* DataTables styles */
-        .dataTables_wrapper .dataTables_paginate .paginate_button {
-            color: #4a76a8 !important;
-        }
-
-        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-            background-color: #4a76a8 !important;
-            color: white !important;
-        }
-
-        .dataTables_wrapper .dataTables_filter input {
-            border-radius: 4px;
-            border: 1px solid #ddd;
-            padding: 5px;
-            width: 250px;
-            margin-left: 10px;
-        }
-    </style> --}}
-
-    <div class="container">
-        <h1>Danh sách hiển thị khóa học theo chuyên ngành {{ $majors->name }}</h1>
-                       
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg" style="margin-bottom: 20px">
+                    <div class="p-6 text-gray-900">
+
+                        <div class="mb-3">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>Tên Chuyên Ngành</th>
+                                    <td>{{ $majors->name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Ngày Tải Lên</th>
+                                    <td>{{ $majors->updated_at->format('d/m/Y') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Mô Tả</th>
+                                    <td>{{ $majors->description }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Số Quyết Định</th>
+                                    <td>{{ $majors->decision_number }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg" style="margin-bottom: 20px">
+                    <h3> {{ $ploCount }} PLO(s)</h3>
+                    <div class="p-6 text-gray-900">
+                        <h3>Danh sách PLO:</h3>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Tên PLO</th>
+                                <th>Chi Tiết</th>
+                            </tr>
+                            @foreach ($major->plos as $plo)
+                                <tr>
+                                    <td>{{ $plo->name }}</td>
+                                    <td>{{ $plo->description }}</td>
+                                </tr>
+                            @endforeach
+                        </table>
+                    </div>
+                </div>
+
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <h3> {{$courseCount}} subject , {{$creditCount}} credits </h3>
                     <div class="p-6 text-gray-900">
                         <table class="table" id="coursesTable">
                             <thead>

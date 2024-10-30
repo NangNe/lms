@@ -89,10 +89,6 @@
                             <table class="table">
                                 <tbody>
                                     <tr>
-                                        <th>ID</th>
-                                        <td>{{ $courses->id }}</td>
-                                    </tr>
-                                    <tr>
                                         <th>Tên khóa học</th>
                                         <td>{{ $courses->name }}</td>
                                     </tr>

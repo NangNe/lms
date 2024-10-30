@@ -35,7 +35,12 @@ class HomeController extends Controller
     public function showCourses($id)
     {
         $majors = Major::with('courses')->findOrFail($id);
-        return view('user/course', compact('majors'));
+        $major = Major::with('plos')->findOrFail($id);
+        $ploCount = $major->plos->count();
+        $courseCount = $majors->courses->count();
+        $creditCount = $majors->courses->sum('credits');
+        
+        return view('user/course', compact('majors', 'major', 'ploCount', 'courseCount', 'creditCount'));
     }
 
     // public function download($filename)

@@ -60,7 +60,7 @@
                                     <div class="plo-outcome">
                                         <!-- Chọn chuyên ngành -->
                                         <div class="form-group">
-                                            <select id="major_id" name="major_id[]" class="form-control select2" required>
+                                            <select id="major_id" name="major_id[]" class="form-control select2" multiple="multiple" required>
                                                 <option value="">Chọn chuyên ngành</option>
                                                 @foreach ($allMajors as $major)
                                                     <option value="{{ $major->id }}">{{ $major->name }}</option>
@@ -110,7 +110,8 @@ $(document).ready(function() {
     // Khởi tạo select2 cho các phần tử hiện có
     $('.select2').select2({
         placeholder: "Chọn chuyên ngành",
-        allowClear: true
+        allowClear: true,
+        multiple: true
     });
 
     // Khi người dùng chọn chuyên ngành đầu tiên, lưu ID vào trường ẩn
