@@ -17,7 +17,7 @@
                             @csrf
                             @method('PUT')
                             <div>
-                                <label for="code" class="block text-gray-700 font-semibold mb-2">Mã Chuyên Ngành</label>
+                                <label for="code" class="block text-gray-700 font-semibold mb-2">Mã Khoa</label>
                                 <input type="text" class="form-input w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out" id="code" name="code" value="{{ old('code', $major->code) }}" required>
                                 @error('code')
                                     <p class="text-red-600 text-sm mt-1">{{ $message }}</p>

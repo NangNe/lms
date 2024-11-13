@@ -12,14 +12,13 @@ class Plo extends Model
     protected $table = 'plos';
 
     protected $fillable = [
-        'major_id',
         'name',
         'description',
     ];
 
-    public function major()
+    public function majors()
     {
-        return $this->belongsTo(Major::class, 'major_id');
+        return $this->belongsToMany(Major::class, 'major_plo', 'plo_id', 'major_id');
     }
     
 }

@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="container" style="margin-top: -70px">
+    <div class="container">
         <h1>Chi tiết chương trình giảng dạy</h1>
 
         <div class="py-12">

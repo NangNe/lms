@@ -57,7 +57,7 @@
         @endisset
 
         <!-- Page Content -->
-        <main style="margin-bottom: 75px; margin-top: 75px">
+        <main style="margin-bottom: 5px; margin-top: 5px">
             @yield('content')
         </main>
         <footer style="background-color: #ffffff; padding: 20px 0; font-family: Arial, sans-serif;">

@@ -18,7 +18,13 @@ class MajorController extends Controller
             return redirect()->route('dashboard')->with('error', 'Bạn không có quyền truy cập vào trang này.');
         }
 
-        $majors = Major::all();
+        $majors = Major::all()->groupBy('code');
+    
+        // Kiểm tra nếu không có chuyên ngành
+        if ($majors->isEmpty()) {
+            return redirect()->back()->with('error', 'Không tìm thấy chuyên ngành nào.');
+        }
+    
         return view('admin/major/index', compact('majors'));
     }
 
@@ -28,8 +34,9 @@ class MajorController extends Controller
         if (Auth::user()->usertype !== 'admin') {
             return redirect()->route('majors')->with('error', 'Bạn không có quyền tạo chuyên ngành.');
         }
+        $existingCodes = Major::pluck('code')->unique()->toArray();
 
-        return view('admin/major/create');
+        return view('admin/major/create', compact('existingCodes'));
     }
 
     // Lưu chuyên ngành mới (chỉ dành cho admin)
@@ -38,28 +45,34 @@ class MajorController extends Controller
         if (Auth::user()->usertype !== 'admin') {
             return redirect()->route('majors')->with('error', 'Bạn không có quyền lưu chuyên ngành.');
         }
-
+    
+        // Xác thực dữ liệu
         $request->validate([
-            'code' => 'required|string|max:255|unique:majors',
+            'code' => 'required|string|max:255', // Không cần unique
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'decision_number' => 'nullable|string',
         ]);
-
+    
         // Tạo chuyên ngành mới
-        $major = Major::create($request->all());
-
-        // Tính tổng số tín chỉ từ bảng courses liên quan đến major_id vừa tạo
+        $major = Major::create([
+            'code' => $request->code,
+            'name' => $request->name,
+            'description' => $request->description,
+            'decision_number' => $request->decision_number,
+        ]);
+    
+        // Tính tổng số tín chỉ từ các khóa học liên quan đến major_id
         $totalCredits = $major->courses->sum('credits');
-
+    
         // Cập nhật giá trị total_credits
         $major->total_credits = $totalCredits;
         $major->save();
-
+    
         return redirect()->route('majors')->with('success', 'Chuyên ngành đã được tạo thành công.');
     }
-
-
+    
+    
 
     // Chỉnh sửa chuyên ngành (chỉ dành cho admin)
     public function edit($id)
@@ -85,7 +98,7 @@ class MajorController extends Controller
 
         // Xác thực dữ liệu đầu vào
         $validatedData = $request->validate([
-            'code' => 'required|string|max:255|unique:majors,code,' . $major->id,
+            'code' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'decision_number' => 'nullable|string',

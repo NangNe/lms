@@ -8,6 +8,7 @@ use App\Models\Course;
 use App\Models\Assignments;
 use App\Models\CoursesLo;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Material;
 
@@ -16,7 +17,7 @@ class HomeController extends Controller
     //
     public function index()
     {
-        $majors = Major::all();
+        $majors = Major::all()->groupBy('code');
         return view('user/index')->with('majors', $majors);
     }
 
@@ -42,6 +43,33 @@ class HomeController extends Controller
         
         return view('user/course', compact('majors', 'major', 'ploCount', 'courseCount', 'creditCount'));
     }
+
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $courses = Course::where('name', 'LIKE', "%$query%")
+            ->orWhere('code', 'LIKE', "%$query%")
+            ->get();
+
+        if (Auth::check()) {
+            $userType = Auth::user()->usertype;
+
+            if ($userType === 'admin' || $userType === 'lecturer') {
+                // Trả về view cho admin
+                return view('admin/courses.search', compact('courses'));
+            } elseif ($userType === 'user') {
+                // Trả về view cho user thông thường
+                return view('user/search', compact('courses'));
+            }
+        } else {
+
+            return view('guest.search', compact('courses'));
+        }
+        
+    }
+
+
 
     // public function download($filename)
     // {

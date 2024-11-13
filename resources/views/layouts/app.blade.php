@@ -49,12 +49,12 @@
         th, td {
             padding: 12px;
             text-align: left;
-            border: 1px solid #ddd;
+            border: 1px solid #828282;
         }
 
         th {
-            background-color: #ffd943; /* Màu nền cho tiêu đề */
-            color: rgb(252, 252, 252);
+            background-color: #f6ff00; /* Màu nền cho tiêu đề */
+            color: rgb(0, 0, 0);
             font-size: 16px;
         }
 

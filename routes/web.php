@@ -88,6 +88,8 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
 // Routes for course_LO
 Route::prefix('admin')->middleware(['auth','admin'])->group(function(){
     Route::get('/courses_lo', [CoursesLoController::class, 'index'])->name('courses_lo');
+    Route::get('/courses/search', [CourseController::class, 'search'])->name('courses.search');
+
 });
 
 // Routes for material
@@ -108,7 +110,6 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function() {
 //ROute for lecturer permission
 Route::prefix('lecturer')->middleware(['auth', 'lecturer'])->group(function () {
     Route::get('/majors', [MajorController::class, 'showMajor'])->name('majors');
-    Route::get('/courses', [CourseController::class, 'index'])->name('courses');
 });
 
 
@@ -164,6 +165,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::put('plos/{id}', [PloController::class, 'update'])->name('plos.update');
     Route::delete('plos/{id}', [PloController::class, 'destroy'])->name('plos.destroy');
 });
+Route::get('/search', [HomeController::class, 'search'])->name('search');
 
 
 require __DIR__ . '/auth.php';

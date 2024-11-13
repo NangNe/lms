@@ -162,6 +162,69 @@
                             @enderror
                         </div>
 
+                        <!-- mô tả -->
+                        <div class="mb-4">
+                            <label for="description" class="block text-sm font-medium text-gray-700">Mô Tả</label>
+                            <textarea class="form-textarea mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="description" name="description">{{ old('description', $course->description) }}</textarea>
+                            @error('description')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- nhiệm vụ sinh viên -->
+                        <div class="mb-4">
+                            <label for="student_tasks" class="block text-sm font-medium text-gray-700">Nhiệm Vụ Sinh Viên</label>
+                            <textarea class="form-textarea mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="student_tasks" name="student_tasks">{{ old('student_tasks', $course->student_tasks) }}</textarea>
+                            @error('student_tasks')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- số quyết định-->
+                        <div class="mb-4">
+                            <label for="decision_number" class="block text-sm font-medium text-gray-700">Số Quyết Định</label>
+                            <input type="text" class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                                id="decision_number" name="decision_number" value="{{ old('decision_number', $course->decision_number) }}">
+                            @error('decision_number')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <!-- Đã phê duyệt check box-->
+                        <div class="mb-4">
+                            <label for="approved" class="block text-sm font-medium text-gray-700">Đã Phê Duyệt</label>
+                            <input type="checkbox" class="form-checkbox mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                                id="approved" name="approved" {{ old('approved', $course->approved) ? 'checked' : '' }}>
+                            @error('approved')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <!-- note -->
+                        <div class="mb-4">
+                            <label for="note" class="block text-sm font-medium text-gray-700">Ghi Chú</label>
+                            <textarea class="form-textarea mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="note" name="note">{{ old('note', $course->note) }}</textarea>
+                            @error('note')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- ngày phê duyệt -->
+                        <div class="mb-4">
+                            <label for="approved_at" class="block text-sm font-medium text-gray-700">Ngày Phê Duyệt</label>
+                            <input type="date" class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                                id="approved_at" name="approved_at" value="{{ old('approved_at', $course->approved_at) }}">
+                            @error('approved_at')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <!-- kích hoạt is_active -->
+                        <div class="mb-4">
+                            <label for="is_active" class="block text-sm font-medium text-gray-700">Kích Hoạt</label>
+                            <input type="checkbox" class="form-checkbox mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                                id="is_active" name="is_active" {{ old('is_active', $course->is_active) ? 'checked' : '' }}>
+                            @error('is_active')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
                     
                         <!-- Nút cập nhật -->
                         <div class="mt-6 flex justify-center">

@@ -13,7 +13,14 @@ class GuestController extends Controller
 
     public function index()
     {
-        $majors = Major::all();
+
+
+        $majors = Major::all()->groupBy('code');
+    
+        // Kiểm tra nếu không có chuyên ngành
+        if ($majors->isEmpty()) {
+            return redirect()->back()->with('error', 'Không tìm thấy chuyên ngành nào.');
+        }
         return view('guest/index')->with('majors', $majors);
     }
 

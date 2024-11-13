@@ -4,12 +4,9 @@
             {{ __('Quản lý PLO') }}
         </h2>
     </x-slot>
-    </style>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-
-
-            <a href="{{ 'dashboard' }}">Back</a>
+            <a href="{{ route('dashboard') }}">Back</a>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <h1>Danh sách PLO</h1>
@@ -17,7 +14,7 @@
                     <table class="table" id="coursesTable">
                         <thead>
                             <tr>
-                                <th>Mã Chuyên Ngành</th>
+                                <th>Tên Chuyên Ngành</th>
                                 <th>Mã PLO</th>
                                 <th>Mô tả</th>
                                 <th>Thao tác</th>
@@ -26,7 +23,12 @@
                         <tbody>
                             @foreach ($plos as $plo)
                                 <tr>
-                                    <td>{{ $plo->major->code }}</td>
+                                    <td>
+                                        @foreach ($plo->majors as $major)
+                                            <div>{{ $major->name }}</div>
+                                            <!-- Hiển thị mỗi chuyên ngành trên một dòng riêng biệt -->
+                                        @endforeach
+                                    </td>
                                     <td>{{ $plo->name }}</td>
                                     <td>{{ $plo->description }}</td>
                                     <td>
@@ -35,7 +37,8 @@
                                             style="display:inline;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</button>
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</button>
                                         </form>
                                     </td>
                                 </tr>

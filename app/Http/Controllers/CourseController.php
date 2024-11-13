@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
+
 class CourseController extends Controller
 {
     public function index()
@@ -242,4 +243,6 @@ class CourseController extends Controller
             $major->save();
         }
     }
+
+
 }

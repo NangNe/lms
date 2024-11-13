@@ -19,16 +19,17 @@
                         {{ __('Dashboardd') }}
                     </x-nav-link>
                 </div>
-                {{-- <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="url('/courses')" :active="request()->routeIs('courses')">
-                        {{ __('Courses') }}
-                    </x-nav-link>
+                <div class="ms-4 flex items-center">
+                    <form action="{{ route('search') }}" method="GET" class="flex">
+                        <input type="text" name="query" placeholder="Search for courses..."
+                            class="border rounded-md py-1 px-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            style="width: 200px;">
+                        <button type="submit" class="ml-2 bg-indigo-500 text-white py-1 px-3 rounded-md hover:bg-indigo-600">
+                            Search
+                        </button>
+                    </form>
                 </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="url('/assignments')" :active="request()->routeIs('assignments')">
-                        {{ __('Assignments') }}
-                    </x-nav-link>
-                </div> --}}
+
             </div>
 
             <!-- Settings Dropdown -->
