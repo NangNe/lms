@@ -4,7 +4,7 @@
             {{ __('Quản lý Courses') }}
         </h2>
     </x-slot>
-
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <a href="{{ route('courses') }}" class="text-blue-600 hover:underline">Quay lại</a>
@@ -106,6 +106,47 @@
                             </select>
                         </div>
 
+                        <div class="mb-4">
+                            <label for="prior_course" class="block text-sm font-medium text-gray-700">Môn Học Học trước</label>
+                            <select id="prior_course" name="prior_course" class="form-select mt-1 block w-full border-gray-300 rounded-md shadow-sm select3">
+                                <option value="">Chọn Môn Học Học trước</option>
+                                @foreach ($all_courses as $course)
+                                    <option value="{{ $course->id }}" {{ $course->id == $currentPriorCourse ? 'selected' : '' }}>
+                                        {{ $course->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="co_requisite" class="block text-sm font-medium text-gray-700">Môn Học Song Hành</label>
+                            <select id="co_requisite" name="co_requisite" class="form-select mt-1 block w-full border-gray-300 rounded-md shadow-sm select3">
+                                <option value="">Chọn Môn Học Song HànhHành</option>
+                                @foreach ($all_courses as $course)
+                                    <option value="{{ $course->id }}" {{ $course->id == $currentCoRequisite ? 'selected' : '' }}>
+                                        {{ $course->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        
+                        <div class="mb-4">
+                            <label for="is_mandatory" class="block text-sm font-medium text-gray-700">Bắt Buộc</label>
+                            
+                            <!-- Giá trị mặc định nếu checkbox không được chọn -->
+                            <input type="hidden" name="is_mandatory" value="0">
+                            
+                            <input type="checkbox" class="form-checkbox mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                                   id="is_mandatory" name="is_mandatory" value="1" 
+                                   {{ old('is_mandatory', $course->is_mandatory) ? 'checked' : '' }}>
+                            
+                            @error('is_mandatory')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        
+
                         <!-- Tên Tiếng Anh -->
                         <div class="mb-4">
                             <label for="english_name" class="block text-sm font-medium text-gray-700">Tên Tiếng Anh</label>
@@ -119,7 +160,7 @@
                         <!-- Phân bổ thời gian -->
                         <div class="mb-4">
                             <label for="time_allocation" class="block text-sm font-medium text-gray-700">Phân bổ thời gian</label>
-                            <input type="number" class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                            <input type="texttext" class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm"
                                 id="time_allocation" name="time_allocation" value="{{ old('time_allocation', $course->time_allocation) }}">
                             @error('time_allocation')
                                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -182,19 +223,19 @@
 
                         <!-- số quyết định-->
                         <div class="mb-4">
-                            <label for="decision_number" class="block text-sm font-medium text-gray-700">Số Quyết Định</label>
+                            <label for="decision_no" class="block text-sm font-medium text-gray-700">Số Quyết Định</label>
                             <input type="text" class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                                id="decision_number" name="decision_number" value="{{ old('decision_number', $course->decision_number) }}">
-                            @error('decision_number')
+                                id="decision_no" name="decision_no" value="{{ old('decision_no', $course->decision_no) }}">
+                            @error('decision_no')
                                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
                         <!-- Đã phê duyệt check box-->
                         <div class="mb-4">
-                            <label for="approved" class="block text-sm font-medium text-gray-700">Đã Phê Duyệt</label>
+                            <label for="is_approved" class="block text-sm font-medium text-gray-700">Đã Phê Duyệt</label>
                             <input type="checkbox" class="form-checkbox mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                                id="approved" name="approved" {{ old('approved', $course->approved) ? 'checked' : '' }}>
-                            @error('approved')
+                                id="is_approved" name="is_approved" {{ old('is_approved', $course->is_approved) ? 'checked' : '' }}>
+                            @error('is_approved')
                                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
@@ -207,20 +248,43 @@
                             @enderror
                         </div>
 
-                        <!-- ngày phê duyệt -->
                         <div class="mb-4">
-                            <label for="approved_at" class="block text-sm font-medium text-gray-700">Ngày Phê Duyệt</label>
-                            <input type="date" class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                                id="approved_at" name="approved_at" value="{{ old('approved_at', $course->approved_at) }}">
-                            @error('approved_at')
+                            <label for="department" class="block text-sm font-medium text-gray-700">Khoa</label>
+                            <textarea class="form-textarea mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="department" name="department">{{ old('department', $course->department) }}</textarea>
+                            @error('department')
                                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
-                        <!-- kích hoạt is_active -->
+
+                        <!-- ngày phê duyệt -->
+                        <div class="mb-4">
+                            <label for="approved_date" class="block text-sm font-medium text-gray-700">Ngày Phê Duyệt</label>
+                            <input type="date" class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                                id="approved_date" name="approved_date" value="{{ old('approved_date', $course->approved_date) }}">
+                            @error('approved_date')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        {{-- <!-- kích hoạt is_active -->
                         <div class="mb-4">
                             <label for="is_active" class="block text-sm font-medium text-gray-700">Kích Hoạt</label>
                             <input type="checkbox" class="form-checkbox mt-1 block w-full border-gray-300 rounded-md shadow-sm"
                                 id="is_active" name="is_active" {{ old('is_active', $course->is_active) ? 'checked' : '' }}>
+                            @error('is_active')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div> --}}
+
+                        <div class="mb-4">
+                            <label for="is_active" class="block text-sm font-medium text-gray-700">Bắt Buộc</label>
+                            
+                            <!-- Giá trị mặc định nếu checkbox không được chọn -->
+                            <input type="hidden" name="is_active" value="0">
+                            
+                            <input type="checkbox" class="form-checkbox mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                                   id="is_active" name="is_active" value="1" 
+                                   {{ old('is_active', $course->is_active) ? 'checked' : '' }}>
+                            
                             @error('is_active')
                                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                             @enderror
@@ -268,6 +332,8 @@
         </div>
     </div>
 </x-app-layout>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 <script>
     $(document).ready(function() {

@@ -18,7 +18,7 @@
         .table td {
             padding: 0.75rem;
             vertical-align: top;
-            border-top: 1px solid #5b6771;
+            border-top: 1px solid #ffcc00;
         }
 
         .table th {
@@ -34,6 +34,23 @@
 
         .table tbody tr:hover {
             background-color: #e9ecef;
+        }
+
+        th {
+            width: 200px;
+            /* Điều chỉnh độ rộng cột th theo ý muốn */
+            text-align: left;
+            /* Căn lề cho văn bản */
+        }
+
+        td {
+            width: auto;
+            /* Tự động điều chỉnh độ dài cột td */
+        }
+
+        table {
+            width: 100%;
+            /* Đảm bảo bảng chiếm toàn bộ chiều rộng */
         }
     </style>
     <div class="py-12">
@@ -52,6 +69,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <td>{{ $courses->id }}</td>
+                                </tr>
                                 <tr>
                                     <th>Tên khóa học</th>
                                     <td>{{ $courses->name }}</td>

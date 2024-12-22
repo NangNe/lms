@@ -1,4 +1,7 @@
 <x-guest-layout>
+    <div class="flex lg:justify-center lg:col-start-2">
+        <img src="https://elib.vku.udn.vn/image/LogoVKU.png" alt="">
+    </div>
     <form method="POST" action="{{ route('register') }}">
         @csrf
 

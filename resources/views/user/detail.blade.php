@@ -7,7 +7,54 @@
         </h2>
     </x-slot>
 
+    <style>
+        .table {
+            width: 100%;
+            margin-bottom: 1rem;
+            color: #292121;
+            border-collapse: collapse;
 
+        }
+
+        .table th,
+        .table td {
+            padding: 0.75rem;
+            vertical-align: top;
+            border-top: 1px solid #ffcc00;
+        }
+
+        .table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            text-align: left;
+            color: #000000
+        }
+
+        .table tbody tr:nth-of-type(odd) {
+            background-color: #bcb1b1;
+        }
+
+        .table tbody tr:hover {
+            background-color: #e9ecef;
+        }
+
+        th {
+            width: 200px;
+            /* Điều chỉnh độ rộng cột th theo ý muốn */
+            text-align: left;
+            /* Căn lề cho văn bản */
+        }
+
+        td {
+            width: auto;
+            /* Tự động điều chỉnh độ dài cột td */
+        }
+
+        table {
+            width: 100%;
+            /* Đảm bảo bảng chiếm toàn bộ chiều rộng */
+        }
+    </style>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <a href="{{ url()->previous() }}">Back</a>

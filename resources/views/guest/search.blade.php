@@ -30,23 +30,20 @@
                                         <td>{{ $course->approved_at }}</td>
                                         <td>{{ $course->decision_number }}</td>
                                         <td>
-                                            @if ($course->prerequisites)
-                                                @php
-                                                    $prerequisiteName = '';
-                                                    $prerequisiteId = $course->prerequisites;
-                                                    $prerequisiteCourse = \App\Models\Course::find($prerequisiteId);
-                                                    if ($prerequisiteCourse) {
-                                                        $prerequisiteName = $prerequisiteCourse->name;
-                                                    }
-                                                @endphp
-                                                {{ $prerequisiteName }}
-                                            @endif
+                                            @php
+                                                $priorCourseName = '';
+                                                if (!empty($course->prior_course)) {
+                                                    $priorCourse = \App\Models\Course::find($course->prior_course);
+                                                    $priorCourseName = $priorCourse ? $priorCourse->name : '';
+                                                }
+                                            @endphp
+                                            {{ $priorCourseName }}
                                         </td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="7" class="text-center">Không tìm thấy khóa học nào.</td>
+                                    <td colspan="7" class="text-center">No courses found.</td>
                                 </tr>
                             @endif
                         </tbody>

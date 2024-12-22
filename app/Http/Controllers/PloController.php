@@ -31,7 +31,7 @@ class PloController extends Controller
         $user = Auth::user();
 
         if ($user->usertype !== 'lecturer' && $user->usertype !== 'admin') {
-            return redirect()->route('dashboard')->with('error', 'Bạn không có quyền truy cập vào trang này.');
+            return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
         }
 
         $allMajors = Major::all();
@@ -49,7 +49,7 @@ class PloController extends Controller
     {
         // Kiểm tra quyền truy cập của người dùng
         if (Auth::user()->usertype !== 'admin') {
-            return redirect()->route('plos.index')->with('error', 'Bạn không có quyền thêm PLO.');
+            return redirect()->route('plos.index')->with('error', 'You do not have permission to add PLO.');
         }
     
         // Kiểm tra dữ liệu đầu vào
@@ -87,7 +87,7 @@ class PloController extends Controller
             }
         }
     
-        return redirect()->route('plos.index')->with('success', 'PLO đã được tạo thành công!');
+        return redirect()->route('plos.index')->with('success', 'PLO was created successfully!');
     }
     
 
@@ -121,7 +121,7 @@ class PloController extends Controller
         $user = Auth::user();
 
         if ($user->usertype !== 'lecturer' && $user->usertype !== 'admin') {
-            return redirect()->route('dashboard')->with('error', 'Bạn không có quyền truy cập vào trang này.');
+            return redirect()->route('dashboard')->with('error', 'You do not have permission to access this page.');
         }
 
         $plo = Plo::with('majors')->findOrFail($id);
@@ -135,7 +135,7 @@ class PloController extends Controller
         $user = Auth::user();
 
         if ($user->usertype !== 'lecturer' && $user->usertype !== 'admin') {
-            return redirect()->route('dashboard')->with('error', 'Bạn không có quyền cập nhật PLO.');
+            return redirect()->route('dashboard')->with('error', 'You do not have permission to update PLO.');
         }
 
         $validatedData = $request->validate([
@@ -155,7 +155,7 @@ class PloController extends Controller
         // Cập nhật các chuyên ngành liên kết
         $plo->majors()->sync($request->input('major_id'));
 
-        return redirect()->route('plos.index')->with('success', 'PLO đã được cập nhật thành công!');
+        return redirect()->route('plos.index')->with('success', 'PLO has been updated successfully!');
     }
 
     public function destroy($id)
@@ -163,13 +163,13 @@ class PloController extends Controller
         $user = Auth::user();
 
         if ($user->usertype !== 'admin') {
-            return redirect()->route('dashboard')->with('error', 'Bạn không có quyền xóa PLO.');
+            return redirect()->route('dashboard')->with('error', 'You do not have permission to delete PLO.');
         }
 
         $plo = Plo::findOrFail($id);
         $plo->majors()->detach(); // Xóa liên kết với các chuyên ngành
         $plo->delete();
 
-        return redirect()->route('plos.index')->with('success', 'PLO đã được xóa thành công!');
+        return redirect()->route('plos.index')->with('success', 'PLO has been deleted successfully!');
     }
 }

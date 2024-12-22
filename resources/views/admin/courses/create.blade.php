@@ -4,8 +4,8 @@
             {{ __('Quản lý Courses') }}
         </h2>
     </x-slot>
-    </style>
 
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <a href="{{ route('courses') }}">Back</a>

@@ -1,7 +1,7 @@
 <x-guest-layout>
     <style>
         .login-container {
-            min-height: 100vh;
+            min-height: 75vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -87,13 +87,11 @@
             }
         }
     </style>
-
+    <div class="flex lg:justify-center lg:col-start-2">
+        <img src="https://elib.vku.udn.vn/image/LogoVKU.png" alt="">
+    </div>
     <div class="login-container">
         <div class="login-card sm:rounded-lg sm:max-w-md">
-            <!-- Logo -->
-            <div class="logo">
-                <img src="https://lichtuan.vku.udn.vn/images/logo.png" alt="VKU Logo">
-            </div>
 
             <h2 class="login-title">{{ __('Login') }}</h2>
 

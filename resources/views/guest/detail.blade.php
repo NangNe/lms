@@ -1,87 +1,75 @@
 @extends('layouts.index')
 
 @section('content')
-    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight" style="margin-left: 100px">
         Chi tiết khóa học {{ $courses->name }}
     </h2>
-    {{-- <style>
+    
+    <style>
         .table {
             width: 100%;
             margin-bottom: 1rem;
             color: #292121;
             border-collapse: collapse;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-            border-radius: 8px;
+
         }
 
         .table th,
         .table td {
-            padding: 12px;
+            padding: 0.75rem;
             vertical-align: top;
-            border-top: 1px solid #5b6771;
+            border-top: 1px solid #ffcc00;
         }
 
         .table th {
             background-color: #f8f9fa;
             font-weight: bold;
             text-align: left;
+            color: #000000
         }
 
         .table tbody tr:nth-of-type(odd) {
-            background-color: #f2f2f2;
+            background-color: #bcb1b1;
         }
 
         .table tbody tr:hover {
             background-color: #e9ecef;
         }
 
-        a {
-            color: #4a76a8;
-            text-decoration: none;
+        th {
+            width: 200px;
+            /* Điều chỉnh độ rộng cột th theo ý muốn */
+            text-align: left;
+            /* Căn lề cho văn bản */
         }
 
-        a:hover {
-            text-decoration: underline;
+        td {
+            width: auto;
+            /* Tự động điều chỉnh độ dài cột td */
         }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f4f6f9;
-            border-radius: 8px;
+        table {
+            width: 100%;
+            /* Đảm bảo bảng chiếm toàn bộ chiều rộng */
         }
-
-        h2 {
-            text-align: center;
-            font-size: 28px;
-            margin-bottom: 20px;
-            color: #4a76a8;
-        }
-
+        
         .btn-back {
-            display: inline-block;
-            margin-bottom: 20px;
+            margin-left: 100px;
             padding: 10px 20px;
-            background-color: #4a76a8;
-            color: #fff;
+            color: #000000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
             text-decoration: none;
-            border-radius: 4px;
         }
-
-        .btn-back:hover {
-            background-color: #3a5a8c;
-        }
-    </style> --}}
-
+    </style>
     <div class="container">
         <a href="{{ url()->previous() }}" class="btn-back">Quay lại</a>
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-1200">
-                        <div class="container">
+                        <div class="table-responsive">
                             @if ($courses->syllabus)
                                 <a href="{{ Storage::url('uploads/' . $courses->syllabus) }}" target="_blank">Tải xuống
                                     đề cương</a>

@@ -10,6 +10,7 @@ use App\Models\CoursesLo;
 use Illuminate\Support\Facades\Auth;
 use ZipArchive;
 use Illuminate\Support\Facades\Log;
+use PhpParser\Node\Stmt\TryCatch;
 
 class LessonsController extends Controller
 {
@@ -45,56 +46,52 @@ class LessonsController extends Controller
 
     public function store(Request $request)
     {
-        // Kiểm tra quyền của người dùng
-        if (Auth::user()->usertype !== 'lecturer') {
-            return redirect()->back()->with('error', 'Bạn không có quyền tạo bài giảng.');
-        }
+        try {
+            //code...
+            $validated = $request->validate([
+                'course_id.*' => 'required|exists:courses,id',
+                'topic.*' => 'required|string|max:255',
+                'number_of_periods.*' => 'required|integer|min:1',
+                'objectives.*' => 'nullable|string',
+                'clos' => 'array',
+                'clos.*' => 'exists:courses_lo,id',
+                'lecture_method.*' => 'nullable|string|max:255',
+                'active.*' => 'nullable|string',
+                's_download.*' => 'nullable|file|mimes:pdf,png,jpg,doc,docx,ppt,pptx,xls,xlsx,zip'
+            ]);
 
-        // Xác thực dữ liệu đầu vào
-        $request->validate([
-            'course_id' => 'required|exists:courses,id',
-            'clos' => 'array',
-            'clos.*' => 'exists:courses_lo,id',
-            'topic' => 'required|string|max:255',
-            'number_of_periods' => 'required|integer',
-            'objectives' => 'required|string',
-            'lecture_method' => 'nullable|string',
-            'active' => 'nullable|string',
-            's_download' => 'nullable|file|mimes:pdf,png,jpg,doc,docx,ppt,pptx,xls,xlsx,zip'
-        ]);
+            foreach ($request->course_id as $index => $courseId) {
+                $lesson = new Lessons();
+                $lesson->course_id = $courseId;
+                $lesson->topic = $request->topic[$index];
+                $lesson->number_of_periods = $request->number_of_periods[$index];
+                $lesson->objectives = $request->objectives[$index];
+                $lesson->lecture_method = $request->lecture_method[$index];
+                $lesson->active = $request->active[$index];
+                // $lesson->clos()->sync($request->clos[$index]);
+                // Xử lý upload file
+                if ($request->hasFile('s_download') && isset($request->s_download[$index])) {
+                    $file = $request->s_download[$index]; // Lấy file tương ứng với $index
+                    $filename = time() . '-' . $file->getClientOriginalName();
+                    $file->storeAs('public/uploads', $filename);
+                    $lesson->s_download = $filename;
+                }
+                
+        
+                $lesson->save();
 
-        // Kiểm tra khóa học thuộc về giảng viên
-        $user = Auth::user();
-        if ($user->usertype === 'lecturer') {
-            $courseIds = $user->courses->pluck('id')->toArray();
-            if (!in_array($request->course_id, $courseIds)) {
-                return redirect()->back()->with('error', 'Bạn không thể thêm bài giảng cho khóa học này.');
+                $lesson->coursesLo()->sync($request->clos[$index]);
             }
+
+            return redirect()->route('lessons.index')->with('success', 'Lessons created successfully!');
+        } catch (\Exception $e) {
+            //throw $th;
+            return redirect()->back()->with('error', 'Có lỗi xảy ra khi tạo lessons' . $e->getMessage());
         }
-
-        // Tạo bài giảng mới
-        $lesson = new Lessons();
-        $lesson->course_id = $request->course_id;
-        $lesson->topic = $request->topic;
-        $lesson->number_of_periods = $request->number_of_periods;
-        $lesson->objectives = $request->objectives;
-        $lesson->clos = $request->clos ? implode(',', $request->clos) : null;
-        $lesson->lecture_method = $request->lecture_method;
-        $lesson->active = $request->active;
-
-        // Xử lý file đính kèm
-        if ($request->hasFile('s_download')) {
-            $file = $request->file('s_download');
-            $filename = time() . '-' . $file->getClientOriginalName();
-            $file->storeAs('public/uploads', $filename);
-            $lesson->s_download = $filename;
-        }
-
-        $lesson->save();
-        $lesson->coursesLo()->sync($request->clos);
-
-        return redirect()->route('lessons.index')->with('success', 'Bài giảng đã được tạo thành công.');
     }
+
+    
+
 
 
     public function edit(Lessons $lesson)
@@ -186,21 +183,21 @@ class LessonsController extends Controller
     {
         // Lấy danh sách các bài giảng của môn học được chỉ định
         $lessons = Lessons::where('course_id', $courseId)->get();
-        
+
         if ($lessons->isEmpty()) {
             return redirect()->back()->with('error', 'Không có bài giảng nào cho môn học này.');
         }
-        
+
         // Cập nhật đường dẫn lưu trữ chính xác
         $storagePath = storage_path('app/public/uploads/');
         $zipFileName = 'All lesson files.zip';
         $zipPath = $storagePath . $zipFileName;
-    
+
         // Xóa file zip cũ nếu tồn tại
         if (file_exists($zipPath)) {
             unlink($zipPath);
         }
-    
+
         $zip = new ZipArchive;
         if ($zip->open($zipPath, ZipArchive::CREATE) === TRUE) {
             $filesAdded = false;
@@ -218,7 +215,7 @@ class LessonsController extends Controller
                 }
             }
             $zip->close();
-    
+
             if (!$filesAdded) {
                 Log::error("Không có tệp nào được thêm vào ZIP.");
                 return redirect()->back()->with('error', 'Không có tệp nào để nén.');
@@ -227,7 +224,7 @@ class LessonsController extends Controller
             Log::error("Không thể mở hoặc tạo file zip tại: " . $zipPath);
             return redirect()->back()->with('error', 'Không thể tạo file zip.');
         }
-    
+
         if (file_exists($zipPath)) {
             return response()->download($zipPath)->deleteFileAfterSend(true);
         } else {
@@ -235,7 +232,7 @@ class LessonsController extends Controller
         }
     }
 
-        public function download($filename)
+    public function download($filename)
     {
         $filePath = 'uploads/' . $filename;
 
@@ -245,9 +242,9 @@ class LessonsController extends Controller
             return redirect()->back()->with('error', 'File không tồn tại.');
         }
     }
-    
-    
-    
+
+
+
     public function getClos($courseId)
     {
         // Lấy danh sách các CLOs liên quan đến course_id

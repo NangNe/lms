@@ -65,7 +65,7 @@
                                 <th>Tên Khóa Học</th>
                                 <th>Học Kỳ</th>
                                 <th>Tín chỉ </th>
-                                <th>Điều kiện tiên quyết</th>
+                                <th>Học phần học trước</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -79,25 +79,13 @@
                                     <td>{{ $course->credits }}</td>
                                     <td>
                                         @php
-                                            // Khởi tạo biến để lưu tên khóa học
-                                            $prerequisiteName = '';
-
-                                            // Nếu thuộc tính prerequisites không rỗng
-                                            if (!empty($course->prerequisites)) {
-                                                // Lấy ID khóa học từ thuộc tính prerequisites
-                                                $prerequisiteId = $course->prerequisites;
-
-                                                // Lấy tên khóa học dựa trên ID
-                                                $prerequisiteCourse = \App\Models\Course::find($prerequisiteId);
-
-                                                // Kiểm tra nếu khóa học tồn tại
-                                                if ($prerequisiteCourse) {
-                                                    $prerequisiteName = $prerequisiteCourse->name;
-                                                }
+                                            $priorCourseName = '';
+                                            if (!empty($course->prior_course)) {
+                                                $priorCourse = \App\Models\Course::find($course->prior_course);
+                                                $priorCourseName = $priorCourse ? $priorCourse->name : '';
                                             }
                                         @endphp
-                                        <!-- Hiển thị tên khóa học -->
-                                        {{ $prerequisiteName }}
+                                        {{ $priorCourseName }}
                                     </td>
                                 </tr>
                             @endforeach

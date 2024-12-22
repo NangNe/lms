@@ -32,7 +32,7 @@ class CoursesLoController extends Controller
     public function create()
     {
         if (Auth::user()->usertype !== 'lecturer') {
-            return redirect()->back()->with('error', 'Bạn không có quyền tạo CoursesLo.');
+            return redirect()->back()->with('error', 'You do not have permission to create CoursesLo.');
         }
         $user = Auth::user();
         $allcourses = Course::all();
@@ -49,7 +49,7 @@ class CoursesLoController extends Controller
     public function store(Request $request)
 {
     if (Auth::user()->usertype !== 'lecturer') {
-        return redirect()->back()->with('error', 'Bạn không có quyền tạo CoursesLo.');
+        return redirect()->back()->with('error', 'You do not have permission to create CoursesLo.');
     }
     $course_ids = $request->input('course_id');
     $names = $request->input('name');
@@ -89,13 +89,13 @@ class CoursesLoController extends Controller
     public function edit($id)
     {
         if (Auth::user()->usertype !== 'lecturer') {
-            return redirect()->route('courses_lo')->with('error', 'Bạn không có quyền chỉnh sửa CoursesLo.');
+            return redirect()->route('courses_lo')->with('error', 'You do not have permission to edit CoursesLo.');
         }
         $user = Auth::user();
         $coursesLo = CoursesLo::findOrfail($id);
 
         if ($user->usertype === 'lecturer' && !$user->courses->pluck('id')->contains($coursesLo->course_id)) {
-            return redirect()->route('courses_lo')->with('error', 'Bạn không có quyền chỉnh sửa CoursesLo này.');
+            return redirect()->route('courses_lo')->with('error', 'You do not have permission to edit CoursesLo.');
         }
 
         $lecturerCourses = $user->courses;
@@ -108,7 +108,7 @@ class CoursesLoController extends Controller
     public function update(Request $request, $id)
     {
         if (Auth::user()->usertype !== 'lecturer') {
-            return redirect()->route('courses_lo')->with('error', 'Bạn không có quyền chỉnh sửa CoursesLo.');
+            return redirect()->route('courses_lo')->with('error', 'You do not have permission to edit CoursesLo.');
         }
         $request->validate([
             'course_id' => 'required|exists:courses,id',
@@ -123,26 +123,26 @@ class CoursesLoController extends Controller
         $coursesLo = CoursesLo::findOrfail($id);
 
         if ($user->usertype === 'lecturer' && !$user->courses->pluck('id')->contains($coursesLo->course_id)) {
-            return redirect()->route('courses_lo')->with('error', 'Bạn không có quyền chỉnh sửa CoursesLo này.');
+            return redirect()->route('courses_lo')->with('error', 'You do not have permission to edit CoursesLo.');
         }
 
 
 
         $coursesLo->update($request->all());
 
-        return redirect()->route('courses_lo')->with('success', 'CoursesLo đã được cập nhật thành công.');
+        return redirect()->route('courses_lo')->with('success', 'CoursesLo has been updated successfully.');
     }
 
 
     public function destroy($id)
     {
         if (Auth::user()->usertype !== 'lecturer') {
-            return redirect()->route('courses_lo')->with('error', 'Bạn không có quyền xóa CoursesLo.');
+            return redirect()->route('courses_lo')->with('error', 'You do not have permission to delete CoursesCLO.');
         }
         $user = Auth::user();
         $coursesLo = CoursesLo::findOrFail($id);
         if ($user->usertype === 'lecturer' && !$user->courses->pluck('id')->contains($coursesLo->course_id)) {
-            return redirect()->route('courses_lo')->with('error', 'Bạn không có quyền xóa CoursesLo này.');
+            return redirect()->route('courses_lo')->with('error', 'You do not have permission to delete Courses.');
         }
 
 
@@ -150,7 +150,7 @@ class CoursesLoController extends Controller
         $coursesLo->delete();
 
 
-        return redirect()->route('courses_lo')->with('success', 'CoursesLo đã được xóa thành công.');
+        return redirect()->route('courses_lo')->with('success', 'CoursesLo was successfully deleted.');
     }
 
     //     public function getClosByCourse($courseId)

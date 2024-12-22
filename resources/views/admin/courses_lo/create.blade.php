@@ -47,7 +47,7 @@
                         <h1>Tạo Learning Outcomes</h1>
                         <form action="{{ route('courses_lo.store') }}" method="POST">
                             @csrf
-
+                            
                             <div class="learning-outcome-container">
 
                                 <div class="form-labels">
@@ -121,6 +121,80 @@
                                 </div>
                             </div>
 
+                            {{-- <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Chọn Khóa Học</th>
+                                        <th>Tên Learning Outcomes</th>
+                                        <th>Chi tiết</th>
+                                        <th>Kiến thức</th>
+                                        <th>Kỹ năng</th>
+                                        <th>Trách nhiệm</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="learning-outcomes-table-body">
+                                    <tr id="learning-outcome">
+                                        <td>
+                                            <select id="course_id" name="course_id[]" class="form-control select2"
+                                                required>
+                                                @foreach ($allcourses as $course)
+                                                    <option value="{{ $course->id }}">{{ $course->code }} -
+                                                        {{ $course->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('course_id')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="name" name="name[]"
+                                                value="{{ old('name') }}" required>
+                                            @error('name')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <textarea class="form-control" id="detail" name="detail[]">{{ old('detail') }}</textarea>
+                                            @error('detail')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="knowledge" name="knowledge[]"
+                                                value="{{ old('knowledge') }}">
+                                            @error('knowledge')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="skills" name="skills[]"
+                                                value="{{ old('skills') }}">
+                                            @error('skills')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="autonomy_responsibility"
+                                                name="autonomy_responsibility[]"
+                                                value="{{ old('autonomy_responsibility') }}">
+                                            @error('autonomy_responsibility')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <input type="hidden" id="initial_course_id" name="initial_course_id"
+                                                value="">
+
+                                            <button type="button" class="btn btn-danger remove-outcome">Remove</button>
+
+                                        </td>
+
+
+                                    </tr>
+                                </tbody>
+                            </table> --}}
+
+
                             <button type="button" id="add-outcome" class="btn btn-secondary">Add More</button>
                             <button type="submit" class="btn btn-primary">Lưu</button>
                         </form>
@@ -132,38 +206,38 @@
 
 </x-app-layout>
 <script>
-$(document).ready(function() {
-    // Khởi tạo select2 cho các phần tử hiện có
-    $('.select2').select2({
-        placeholder: "Chọn Khóa học",
-        allowClear: true
+    $(document).ready(function() {
+        // Khởi tạo select2 cho các phần tử hiện có
+        $('.select2').select2({
+            placeholder: "Chọn Khóa học",
+            allowClear: true
+        });
+
+        // Khi người dùng chọn khóa học đầu tiên, lưu ID vào trường ẩn
+        $('#course_id').change(function() {
+            $('#initial_course_id').val($(this).val());
+            console.log('Khóa học đã chọn:', $(this).val()); // In ra giá trị để kiểm tra
+        });
+
+        $('#add-outcome').click(function() {
+            console.log('Nút Add More đã được nhấn'); // Thêm dòng này để kiểm tra
+            const initialCourseId = $('#initial_course_id').val();
+
+            if (initialCourseId) {
+                const $container = $('#learning-outcomes-container');
+                const $newOutcome = $('.learning-outcome').first().clone();
+
+                // Thay thế select bằng input hidden chứa course_id
+                $newOutcome.find('.form-group').html(
+                    `<input type="hidden" name="course_id[]" value="${initialCourseId}">`);
+
+                // Xóa giá trị của các input fields khác
+                $newOutcome.find('input:not([type=hidden]), textarea').val('');
+
+                $container.append($newOutcome);
+            } else {
+                alert('Vui lòng chọn khóa học đầu tiên trước khi thêm nhóm mới.');
+            }
+        });
     });
-
-    // Khi người dùng chọn khóa học đầu tiên, lưu ID vào trường ẩn
-    $('#course_id').change(function() {
-        $('#initial_course_id').val($(this).val());
-        console.log('Khóa học đã chọn:', $(this).val()); // In ra giá trị để kiểm tra
-    });
-
-    $('#add-outcome').click(function() {
-        console.log('Nút Add More đã được nhấn'); // Thêm dòng này để kiểm tra
-        const initialCourseId = $('#initial_course_id').val();
-
-        if (initialCourseId) {
-            const $container = $('#learning-outcomes-container');
-            const $newOutcome = $('.learning-outcome').first().clone();
-
-            // Thay thế select bằng input hidden chứa course_id
-            $newOutcome.find('.form-group').html(`<input type="hidden" name="course_id[]" value="${initialCourseId}">`);
-
-            // Xóa giá trị của các input fields khác
-            $newOutcome.find('input:not([type=hidden]), textarea').val('');
-
-            $container.append($newOutcome);
-        } else {
-            alert('Vui lòng chọn khóa học đầu tiên trước khi thêm nhóm mới.');
-        }
-    });
-});
-
 </script>

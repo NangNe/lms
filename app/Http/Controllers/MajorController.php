@@ -32,7 +32,7 @@ class MajorController extends Controller
     public function create()
     {
         if (Auth::user()->usertype !== 'admin') {
-            return redirect()->route('majors')->with('error', 'Bạn không có quyền tạo chuyên ngành.');
+            return redirect()->route('majors')->with('error', 'You do not have permission to create a major.');
         }
         $existingCodes = Major::pluck('code')->unique()->toArray();
 
@@ -43,7 +43,7 @@ class MajorController extends Controller
     public function store(Request $request)
     {
         if (Auth::user()->usertype !== 'admin') {
-            return redirect()->route('majors')->with('error', 'Bạn không có quyền lưu chuyên ngành.');
+            return redirect()->route('majors')->with('error', 'You do not have permission to save the major.');
         }
     
         // Xác thực dữ liệu
@@ -69,7 +69,7 @@ class MajorController extends Controller
         $major->total_credits = $totalCredits;
         $major->save();
     
-        return redirect()->route('majors')->with('success', 'Chuyên ngành đã được tạo thành công.');
+        return redirect()->route('majors')->with('success', 'Major created successfully.');
     }
     
     
@@ -78,7 +78,7 @@ class MajorController extends Controller
     public function edit($id)
     {
         if (Auth::user()->usertype !== 'admin') {
-            return redirect()->route('majors')->with('error', 'Bạn không có quyền chỉnh sửa chuyên ngành.');
+            return redirect()->route('majors')->with('error', 'You do not have permission to edit the major.');
         }
 
         $major = Major::findOrFail($id);
@@ -90,7 +90,7 @@ class MajorController extends Controller
     {
         // Kiểm tra quyền truy cập
         if (Auth::user()->usertype !== 'admin') {
-            return redirect()->route('majors')->with('error', 'Bạn không có quyền cập nhật chuyên ngành.');
+            return redirect()->route('majors')->with('error', 'You do not have permission to update the major.');
         }
 
         // Tìm chuyên ngành theo ID
@@ -116,21 +116,21 @@ class MajorController extends Controller
         $major->total_credits = $totalCredits;
         $major->save();
 
-        return redirect()->route('majors')->with('success', 'Chuyên ngành đã được cập nhật thành công.');
+        return redirect()->route('majors')->with('success', 'Major has been updated successfully.');
     }
 
     // Xóa chuyên ngành (chỉ dành cho admin)
     public function destroy($id)
     {
         if (Auth::user()->usertype !== 'admin') {
-            return redirect()->route('majors')->with('error', 'Bạn không có quyền xóa chuyên ngành.');
+            return redirect()->route('majors')->with('error', 'You do not have permission to delete the major..');
         }
 
         $major = Major::find($id);
 
         if ($major) {
             $major->delete();
-            return redirect()->route('majors')->with('success', 'Chuyên Ngành đã được xóa.');
+            return redirect()->route('majors')->with('success', 'Major has been deleted.');
         }
 
         return redirect()->route('majors')->with('error', 'Chuyên Ngành không tồn tại.');

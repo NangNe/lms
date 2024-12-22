@@ -30,7 +30,9 @@
                             @foreach ($courses as $course)
                                 <tr>
                                     <td>{{ $course->code }}</td>
-                                    <td>{{ $course->name }}</td>
+                                    <td><a href="{{ route('user.detail', $course->id) }}" class="text-blue-500 hover:underline">
+                                        {{ $course->name }}
+                                    </a></td>
                                     <td>{{ $course->semester }}</td>
                                     <td>{{ $course->credits }}</td>
                                     <td>

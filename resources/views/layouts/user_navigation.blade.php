@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ url('/') }}">
+                    <a href="{{ url('/user') }}">
                         <div class="flex lg:justify-left lg:col-start-1">
                             <img src="https://elib.vku.udn.vn/image/LogoVKU.png" alt=""
                                 style="width: 400px; height: auto;">

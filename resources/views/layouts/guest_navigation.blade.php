@@ -6,7 +6,7 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="url('/')" :active="request()->routeIs('guest')">
+                    <x-nav-link :href="url('/guest')" :active="request()->routeIs('guest')">
                         <div class="flex lg:justify-center lg:col-start-2">
                             <img src="https://elib.vku.udn.vn/image/LogoVKU.png" alt=""
                                 style="width: 500px; height: auto;">
