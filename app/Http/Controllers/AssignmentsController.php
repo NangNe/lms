@@ -30,7 +30,7 @@ class AssignmentsController extends Controller
 
     public function create()
     {
-        if (Auth::user()->usertype !== 'lecturer') {
+        if (Auth::user()->usertype !== 'lecturer'|| !Auth::user()->can_manage_content) {
             return redirect()->back()->with('error', 'Bạn không có quyền tạo Assignments.');
         }
         $user = Auth::user();
@@ -99,7 +99,7 @@ class AssignmentsController extends Controller
 
     public function edit(Assignments $assignment)
     {
-        if (Auth::user()->usertype !== 'lecturer') {
+        if (Auth::user()->usertype !== 'lecturer'|| !Auth::user()->can_manage_content) {
             return redirect()->back()->with('error', 'Bạn không có quyền sửa lessons.');
         }
         $user = Auth::user();
@@ -148,7 +148,7 @@ class AssignmentsController extends Controller
     }
     public function destroy(Assignments $assignment)
     {
-        if (Auth::user()->usertype !== 'lecturer') {
+        if (Auth::user()->usertype !== 'lecturer'|| !Auth::user()->can_manage_content) {
             return redirect()->back()->with('error', 'Bạn không có quyền xóa assignments.');
         }
         $user = Auth::user();

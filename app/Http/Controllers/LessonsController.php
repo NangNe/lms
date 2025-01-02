@@ -29,7 +29,7 @@ class LessonsController extends Controller
 
     public function create()
     {
-        if (Auth::user()->usertype !== 'lecturer') {
+        if (Auth::user()->usertype !== 'lecturer'|| !Auth::user()->can_manage_content) {
             return redirect()->back()->with('error', 'Bạn không có quyền tạo lessons.');
         }
         $user = Auth::user();
@@ -50,13 +50,13 @@ class LessonsController extends Controller
             //code...
             $validated = $request->validate([
                 'course_id.*' => 'required|exists:courses,id',
-                'topic.*' => 'required|string|max:255',
+                'topic.*' => 'required|string|max:1000',
                 'number_of_periods.*' => 'required|integer|min:1',
                 'objectives.*' => 'nullable|string',
                 'clos' => 'array',
                 'clos.*' => 'exists:courses_lo,id',
-                'lecture_method.*' => 'nullable|string|max:255',
-                'active.*' => 'nullable|string',
+                'lecture_method.*' => 'nullable|string|max:1000',
+                'active.*' => 'nullable|string|max:1000',
                 's_download.*' => 'nullable|file|mimes:pdf,png,jpg,doc,docx,ppt,pptx,xls,xlsx,zip'
             ]);
 
@@ -68,6 +68,21 @@ class LessonsController extends Controller
                 $lesson->objectives = $request->objectives[$index];
                 $lesson->lecture_method = $request->lecture_method[$index];
                 $lesson->active = $request->active[$index];
+//                 $lesson->objectives = "- Sinh viên hiểu được mục tiêu, vị trí và vai trò của môn học trong chương trình đào tạo của ngành.";
+//                 $lesson->lecture_method = "- Giảng viên giới thiệu đến
+// sinh viên mục tiêu môn học;
+// vị trí và vai trò của môn học
+// trong chương trình đào tạo
+// của ngành; chuẩn đầu ra môn
+// học, các hình thức kiểm tra
+// đánh giá và trọng số của các
+// bài đánh giá, nội dung học
+// phần theo chương.
+// - Giảng bài kết hợp trình chiếu
+// slide bài giảng.
+// - Đặt câu hỏi cho sinh viên suy
+// nghĩ và trả lời.";
+//                 $lesson->active = "Học ở lớp: - Nghe giảng. - Trả lời các câu hỏi của giảng viên đưa ra. - Đặt câu hỏi các vấn đề quan tâm. Học ở nhà: - Ôn lại lý thuyết .- Đọc thêm tài liệu, tìm hiểu nội dung bài mới";
                 // $lesson->clos()->sync($request->clos[$index]);
                 // Xử lý upload file
                 if ($request->hasFile('s_download') && isset($request->s_download[$index])) {
@@ -96,7 +111,7 @@ class LessonsController extends Controller
 
     public function edit(Lessons $lesson)
     {
-        if (Auth::user()->usertype !== 'lecturer') {
+        if (Auth::user()->usertype !== 'lecturer'|| !Auth::user()->can_manage_content) {
             return redirect()->back()->with('error', 'Bạn không có quyền chỉnh sửa lessons.');
         }
         $user = Auth::user();
@@ -120,12 +135,12 @@ class LessonsController extends Controller
         }
         $request->validate([
             'course_id' => 'required|exists:courses,id',
-            'topic' => 'required|string|max:255',
+            'topic' => 'required|string|max:1000',
             'number_of_periods' => 'required|integer',
-            'objectives' => 'required|string',
+            'objectives' => 'nullable|string',
             'clos' => 'nullable|array',
-            'lecture_method' => 'nullable|string',
-            'active' => 'nullable|string',
+            'lecture_method' => 'nullable|string|max:1000',
+            'active' => 'nullable|string|max:1000',
             's_download' => 'nullable|file|mimes:pdf,png,jpg,doc,docx,ppt,pptx,xls,xlsx,zip'
         ]);
         $user = Auth::user();
@@ -162,7 +177,7 @@ class LessonsController extends Controller
 
     public function destroy(Lessons $lesson)
     {
-        if (Auth::user()->usertype !== 'lecturer') {
+        if (Auth::user()->usertype !== 'lecturer'||!Auth::user()->can_manage_content) {
             return redirect()->back()->with('error', 'Bạn không có quyền xóa lessons.');
         }
         // Xóa file nếu có

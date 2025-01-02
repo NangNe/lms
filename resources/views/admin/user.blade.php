@@ -15,6 +15,7 @@
                     <tr>
                         <th>Tên</th>
                         <th>Email</th>
+                        <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -22,6 +23,13 @@
                         <tr>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
+                            <td>
+                                <form action="{{ route('admin.user.delete', $user->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc muốn xóa người dùng này?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Xóa</button>
+                                </form>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -35,6 +43,7 @@
                     <tr>
                         <th>Tên</th>
                         <th>Email</th>
+                        <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,6 +51,13 @@
                         <tr>
                             <td>{{ $lecturer->name }}</td>
                             <td>{{ $lecturer->email }}</td>
+                            <td>
+                                <form action="{{ route('admin.lecturer.delete', $lecturer->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc muốn xóa giảng viên này?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Xóa</button>
+                                </form>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

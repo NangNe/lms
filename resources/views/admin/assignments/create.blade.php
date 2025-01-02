@@ -121,11 +121,11 @@
                                     <tr>
                                         <th>Chọn Khóa Học</th>
                                         <th>Tên thành phần đánh giá</th>
-                                        <th>Trọng số</th>
+                                        <th>Trọng số (Number)</th>
                                         <th>CLO</th>
                                         <th>Hình Thức</th>
                                         <th>Công cụ</th>
-                                        <th>Trọng số CLOCLO</th>
+                                        <th>Trọng số CLO</th>
                                         <th>PLO liên quanquan</th>
                                     </tr>
                                 </thead>

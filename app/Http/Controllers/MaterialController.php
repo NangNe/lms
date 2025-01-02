@@ -28,7 +28,7 @@ class MaterialController extends Controller
 
     public function create()
     {
-        if (Auth::user()->usertype !== 'lecturer') {
+        if (Auth::user()->usertype !== 'lecturer'|| !Auth::user()->can_manage_content) {
             return redirect()->route('material')->with('error', 'Bạn không có quyền tạo material.');
         }
         $user = Auth::user();
@@ -94,7 +94,7 @@ class MaterialController extends Controller
 
     public function edit($id)
     {
-        if (Auth::user()->usertype !== 'lecturer') {
+        if (Auth::user()->usertype !== 'lecturer'|| !Auth::user()->can_manage_content) {
             return redirect()->route('material')->with('error', 'Bạn không có quyền chỉnh sửa material.');
         }
         $user = Auth::user();
@@ -150,7 +150,7 @@ class MaterialController extends Controller
 
     public function destroy($id)
     {   
-        if (Auth::user()->usertype !== 'lecturer') {
+        if (Auth::user()->usertype !== 'lecturer'|| !Auth::user()->can_manage_content) {
             return redirect()->route('material')->with('error', 'Bạn không có quyền xóa material.');
         }
         $user = Auth::user();

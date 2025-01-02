@@ -46,7 +46,7 @@
 
                             <div class="mb-3">
                                 <label for="knowledge" class="form-label">Kiến thức</label>
-                                <input type="number" class="form-control" id="knowledge" name="knowledge"
+                                <input type="text" class="form-control" id="knowledge" name="knowledge"
                                     value="{{ old('knowledge', $coursesLo->knowledge) }}">
                                 @error('knowledge')
                                     <div class="text-danger">{{ $message }}</div>
@@ -55,7 +55,7 @@
 
                             <div class="mb-3">
                                 <label for="skill" class="form-label">Kỹ Năng</label>
-                                <input type="number" class="form-control" id="skill" name="skill"
+                                <input type="text" class="form-control" id="skill" name="skill"
                                     value="{{ old('skill', $coursesLo->skill) }}">
                                 @error('skill')
                                     <div class="text-danger">{{ $message }}</div>
@@ -64,7 +64,7 @@
 
                             <div class="mb-3">
                                 <label for="autonomy_responsibility" class="form-label">Trách nhiệm</label>
-                                <input type="number" class="form-control" id="autonomy_responsibility" name="autonomy_responsibility"
+                                <input type="text" class="form-control" id="autonomy_responsibility" name="autonomy_responsibility"
                                     value="{{ old('autonomy_responsibility', $coursesLo->autonomy_responsibility) }}">
                                 @error('autonomy_responsibility')
                                     <div class="text-danger">{{ $message }}</div>

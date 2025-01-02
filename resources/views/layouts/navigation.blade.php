@@ -64,12 +64,13 @@
                         </x-slot>
                     </x-dropdown>
                 </div>
-                <div class="ms-4 flex items-center">
+                <div class="ms-4 flex items-center hidden sm:flex">
                     <form action="{{ route('search') }}" method="GET" class="flex">
                         <input type="text" name="query" placeholder="Search for courses..."
                             class="border rounded-md py-1 px-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             style="width: 200px;">
-                        <button type="submit" class="ml-2 bg-indigo-500 text-white py-1 px-3 rounded-md hover:bg-indigo-600">
+                        <button type="submit"
+                            class="ml-2 bg-indigo-500 text-white py-1 px-3 rounded-md hover:bg-indigo-600">
                             Search
                         </button>
                     </form>
@@ -163,6 +164,15 @@
             </x-responsive-nav-link>
         </div>
 
+        <div class="pt-2 pb-3 px-4">
+            <form action="{{ route('search') }}" method="GET" class="flex flex-col gap-2">
+                <input type="text" name="query" placeholder="Search for courses..."
+                    class="border rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full">
+                <button type="submit" class="bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600">
+                    Search
+                </button>
+            </form>
+        </div>
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">

@@ -44,7 +44,7 @@
                             <thead>
                                 <tr>
                                     <th>Chọn Khóa Học</th>
-                                    <th>Mô tả Material</th>
+                                    <th>Tên Material</th>
                                     <th>ISBN</th>
                                     <th>Ghi chú</th>
                                     <th>Tác giả</th>

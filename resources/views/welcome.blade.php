@@ -1106,6 +1106,7 @@
 
                     &nbsp;<br><span class="glyphicon glyphicon-envelope"></span> Email: daotao@vku.udn.vn
                 </div>
+            </footer>
         </div>
         <table>
             <tbody>

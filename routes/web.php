@@ -58,7 +58,9 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 Route::middleware(['auth', LecturerMiddleware::class])->group(function () {
     Route::get('/admin/user', [AdminController::class, 'getUsers'])->name('admin.user'); // Lecturers có quyền xem danh sách người dùng
     // Route::get('/lecturer/manage', [AdminController::class, 'manageLecturer'])->name('lecturer.manage');
-    
+    Route::delete('/admin/user/{id}', [AdminController::class, 'deleteUser'])->name('admin.user.delete');
+    Route::delete('/admin/lecturer/{id}', [AdminController::class, 'deleteLecturer'])->name('admin.lecturer.delete');
+
 });
 
 // Routes for major

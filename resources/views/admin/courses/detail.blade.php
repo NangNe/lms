@@ -54,7 +54,7 @@
         }
     </style>
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-10xl mx-auto sm:px-6 lg:px-8">
             <a href="{{ url()->previous() }}">Back</a>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-1200">
@@ -95,19 +95,17 @@
                                     <td>{{ $courses->is_mandatory ? 'Có' : 'Không' }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Điều kiện tiên quyết</th>
-                                    <td>@php
-                                        $prerequisiteName = '';
-
-                                        if (!empty($courses->prerequisites)) {
-                                            $prerequisiteId = $courses->prerequisites;
-                                            $prerequisiteCourse = \App\Models\Course::find($prerequisiteId);
-                                            if ($prerequisiteCourse) {
-                                                $prerequisiteName = $prerequisiteCourse->name;
+                                    <th>Học phần học trước</th>
+                                    <td>
+                                        @php
+                                            $priorCourseName = '';
+                                            if (!empty($courses->prior_course)) {
+                                                $priorCourse = \App\Models\Course::find($courses->prior_course);
+                                                $priorCourseName = $priorCourse ? $priorCourse->name : '';
                                             }
-                                        }
-                                    @endphp
-                                        {{ $prerequisiteName }}</td>
+                                        @endphp
+                                        {{ $priorCourseName }}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Mô tả</th>

@@ -24,14 +24,39 @@ class AdminController extends Controller
 
         return view('admin.user', compact('users', 'lecturers'));
     }
-    
+
+    public function deleteUser($id)
+    {
+        $user = User::find($id);
+
+        if ($user) {
+            $user->delete();
+            return redirect()->back()->with('success', 'Người dùng đã được xóa thành công.');
+        }
+
+        return redirect()->back()->with('error', 'Người dùng không tồn tại.');
+    }
+
+    public function deleteLecturer($id)
+    {
+        $lecturer = User::find($id);
+
+        if ($lecturer && $lecturer->usertype === 'lecturer') {
+            $lecturer->delete();
+            return redirect()->back()->with('success', 'Giảng viên đã được xóa thành công.');
+        }
+
+        return redirect()->back()->with('error', 'Giảng viên không tồn tại hoặc không thể xóa.');
+    }
+
+
 
 
     public function manage()
     {
-        
+
         $user = Auth::user();
-        if($user->usertype != 'admin'){
+        if ($user->usertype != 'admin') {
             return redirect()->route('admin.dashboard')->with('error', 'Bạn không có quyền truy cập vào trang này.');
         }
 
@@ -50,15 +75,12 @@ class AdminController extends Controller
     public function toggleLecturerPermission($lecturerId)
     {
         $lecturer = User::find($lecturerId);
-    
+
         if ($lecturer && $lecturer->usertype === 'lecturer') {
             $lecturer->can_manage_content = !$lecturer->can_manage_content;
             $lecturer->save();
         }
-    
+
         return redirect()->back();
     }
-
-
 }
-

@@ -31,24 +31,32 @@ class CoursesLoController extends Controller
 
     public function create()
     {
-        if (Auth::user()->usertype !== 'lecturer') {
-            return redirect()->back()->with('error', 'You do not have permission to create CoursesLo.');
-        }
         $user = Auth::user();
+    
+        // Kiểm tra xem người dùng có quyền quản lý nội dung hay không
+        if ($user->usertype !== 'lecturer' || !$user->can_manage_content) {
+            return redirect()->back()->with('error', 'Bạn không có quyền tạo CoursesLo.');
+        }
+    
+        // Lấy tất cả các khóa học (dành cho giảng viên có quyền)
         $allcourses = Course::all();
         $courses_lo = Course::all(); // Lấy tất cả các khóa học
-
+    
+        // Nếu là giảng viên, chỉ lấy các khóa học mà giảng viên đó giảng dạy
         if ($user->usertype === 'lecturer') {
             $allcourses = $allcourses->filter(function ($course) use ($user) {
                 return $user->courses->contains($course);
             });
         }
+    
+        // Trả về view với danh sách khóa học
         return view('admin.courses_lo.create', compact('allcourses', 'courses_lo'));
     }
+    
 
     public function store(Request $request)
 {
-    if (Auth::user()->usertype !== 'lecturer') {
+    if (Auth::user()->usertype !== 'lecturer' ) {
         return redirect()->back()->with('error', 'You do not have permission to create CoursesLo.');
     }
     $course_ids = $request->input('course_id');
@@ -88,7 +96,7 @@ class CoursesLoController extends Controller
 
     public function edit($id)
     {
-        if (Auth::user()->usertype !== 'lecturer') {
+        if (Auth::user()->usertype !== 'lecturer' || !Auth::user()->can_manage_content) {
             return redirect()->route('courses_lo')->with('error', 'You do not have permission to edit CoursesLo.');
         }
         $user = Auth::user();
@@ -136,7 +144,7 @@ class CoursesLoController extends Controller
 
     public function destroy($id)
     {
-        if (Auth::user()->usertype !== 'lecturer') {
+        if (Auth::user()->usertype !== 'lecturer'|| !Auth::user()->can_manage_content) {
             return redirect()->route('courses_lo')->with('error', 'You do not have permission to delete CoursesCLO.');
         }
         $user = Auth::user();

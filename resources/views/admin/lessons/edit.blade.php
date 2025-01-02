@@ -10,6 +10,15 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <form action="{{ route('lessons.update', $lesson) }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 @method('PUT')
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
@@ -17,19 +26,23 @@
                             <label for="course_id" class="form-label">Khóa học</label>
                             <select id="course_id" name="course_id" class="form-control">
                                 @foreach ($lecturerCourse as $course)
-                                    <option value="{{ $course->id }}" {{ $course->id == $lesson->course_id ? 'selected' : '' }}>{{ $course->name }}</option>
+                                    <option value="{{ $course->id }}"
+                                        {{ $course->id == $lesson->course_id ? 'selected' : '' }}>{{ $course->name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
 
                         <div class="mb-4">
                             <label for="topic" class="form-label">Nội dung</label>
-                            <input type="text" id="topic" name="topic" class="form-control" value="{{ old('topic', $lesson->topic) }}" required>
+                            <input type="text" id="topic" name="topic" class="form-control"
+                                value="{{ old('topic', $lesson->topic) }}" required>
                         </div>
 
                         <div class="mb-4">
                             <label for="number_of_periods" class="form-label">Số buổi</label>
-                            <input type="number" id="number_of_periods" name="number_of_periods" class="form-control" value="{{ old('number_of_periods', $lesson->number_of_periods) }}" required>
+                            <input type="number" id="number_of_periods" name="number_of_periods" class="form-control"
+                                value="{{ old('number_of_periods', $lesson->number_of_periods) }}" required>
                         </div>
 
                         <div class="mb-4">
@@ -41,29 +54,33 @@
                             <label for="clos" class="form-label">CLO</label>
                             <select name="clos[]" id="clos" class="form-control select2" multiple="multiple">
                                 @foreach ($clos as $clo)
-                                    <option value="{{ $clo->id }}" {{ in_array($clo->id, $selectedClos) ? 'selected' : '' }}>
+                                    <option value="{{ $clo->id }}"
+                                        {{ in_array($clo->id, $selectedClos) ? 'selected' : '' }}>
                                         {{ $clo->name }}
                                     </option>
                                 @endforeach
                             </select>
-                            
+
                         </div>
 
                         <div class="mb-4">
                             <label for="lecture_method" class="form-label">Phương pháp giảng dạy</label>
-                            <input type="text" id="lecture_method" name="lecture_method" class="form-control" value="{{ old('lecture_method', $lesson->lecture_method) }}">
+                            <input type="text" id="lecture_method" name="lecture_method" class="form-control"
+                                value="{{ old('lecture_method', $lesson->lecture_method) }}">
                         </div>
 
                         <div class="mb-4">
                             <label for="active" class="form-label">Hoạt động sinh viên</label>
-                            <input type="text" id="active" name="active" class="form-control" value="{{ old('active', $lesson->active) }}">
+                            <input type="text" id="active" name="active" class="form-control"
+                                value="{{ old('active', $lesson->active) }}">
                         </div>
-                        
+
                         <div class="mb-4">
                             <label for="s_download" class="form-label">Documents</label>
                             <input type="file" id="s_download" name="s_download" class="form-control">
                             @if ($lesson->s_download)
-                                <p>Hiện tại: <a href="{{ Storage::url('uploads/' . $lesson->s_download) }}" target="_blank">Tải xuống tệp hiện tại</a></p>
+                                <p>Hiện tại: <a href="{{ Storage::url('uploads/' . $lesson->s_download) }}"
+                                        target="_blank">Tải xuống tệp hiện tại</a></p>
                             @endif
                         </div>
 
@@ -93,7 +110,8 @@
                         var cloSelect = $('#clos');
                         cloSelect.empty();
                         $.each(data, function(index, clo) {
-                            cloSelect.append('<option value="' + clo.id + '">' + clo.name + ' - ' + clo.detail + '</option>');
+                            cloSelect.append('<option value="' + clo.id + '">' + clo
+                                .name + ' - ' + clo.detail + '</option>');
                         });
                     },
                     error: function(xhr, status, error) {

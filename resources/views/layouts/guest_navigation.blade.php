@@ -2,27 +2,26 @@
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
-            <div class="flex">
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="url('/guest')" :active="request()->routeIs('guest')">
-                        <div class="flex lg:justify-center lg:col-start-2">
-                            <img src="https://elib.vku.udn.vn/image/LogoVKU.png" alt=""
-                                style="width: 500px; height: auto;">
-                        </div>
-                    </x-nav-link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="url('/guest')" :active="request()->routeIs('guest')">
-                        {{ __('Home') }}
-                    </x-nav-link>
-                <div class="ms-4 flex items-center">
+            <div class="flex-shrink-0">
+                <a href="{{ url('/guest') }}">
+                    <img src="https://elib.vku.udn.vn/image/LogoVKU.png" alt="Logo" class="h-10 w-auto sm:h-12"
+                        style="width: 500px; height: auto;">
+                </a>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <x-nav-link :href="url('/guest')" :active="request()->routeIs('guest')">
+                    {{ __('Home') }}
+                </x-nav-link>
+                <div class="ms-4 flex items-center hidden sm:flex">
                     <form action="{{ route('search') }}" method="GET" class="flex">
                         <input type="text" name="query" placeholder="Search for courses..."
                             class="border rounded-md py-1 px-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             style="width: 200px;">
-                        <button type="submit" class="ml-2 bg-indigo-500 text-white py-1 px-3 rounded-md hover:bg-indigo-600">
+                        <button type="submit"
+                            class="ml-2 bg-indigo-500 text-white py-1 px-3 rounded-md hover:bg-indigo-600">
                             Search
                         </button>
                     </form>
@@ -107,6 +106,17 @@
 
         </div>
 
+        <!-- Search Form for Responsive -->
+        <div class="pt-2 pb-3 px-4">
+            <form action="{{ route('search') }}" method="GET" class="flex flex-col gap-2">
+                <input type="text" name="query" placeholder="Search for courses..."
+                    class="border rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full">
+                <button type="submit" class="bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600">
+                    Search
+                </button>
+            </form>
+        </div>
+
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             @if (Auth::check())
@@ -145,3 +155,28 @@
         </div>
     </div>
 </nav>
+
+<style>
+    nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    nav img {
+        max-height: 50px;
+        object-fit: contain;
+    }
+
+    @media (max-width: 640px) {
+        .hidden.sm\\:flex {
+            display: none;
+        }
+
+        .sm\\:hidden {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>

@@ -56,7 +56,7 @@ class CourseController extends Controller
             'major_ids.*' => 'exists:majors,id',
             'is_mandatory' => 'boolean',
             'knowledge_area' => 'nullable|in:General,Core,Specialized,Internship,Thesis',
-            'objectives' => 'nullable|string',
+            'objectives' => 'nullable|string|max1000',
             'summary' => 'nullable|string',
             'description' => 'nullable|string',
             'student_tasks' => 'nullable|string',

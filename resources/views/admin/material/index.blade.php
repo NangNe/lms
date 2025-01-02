@@ -15,7 +15,7 @@
                     <table class="table" id="coursesTable">
                         <thead>
                             <tr>
-                                <th>Mô tả</th>
+                                <th>Tên</th>
                                 <th>Khóa học</th>
                                 <th>Tài liệu chính</th>
                                 <th>Isbn</th>

@@ -31,7 +31,7 @@
                                     <td>{{ $lo->course->name ?? 'Tên khóa học không tồn tại' }}</td>
                                     <td>{{ $lo->detail }}</td>
                                     <td>{{ $lo->knowledge }}</td>
-                                    <td>{{ $lo->skill }}</td>
+                                    <td>{{ $lo->skills }}</td>
                                     <td>{{ $lo->autonomy_responsibility }}</td>
                                     <td>
                                         <a href="{{ route('courses_lo.edit', $lo->id) }}"
